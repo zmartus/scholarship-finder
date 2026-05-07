@@ -72,3 +72,18 @@ export async function countScholarshipsForCollege(collegeId: string): Promise<nu
   if (error) throw new Error(error.message);
   return count ?? 0;
 }
+
+export type ScholarshipWithCollege = Scholarship & {
+  college: Pick<College, "id" | "slug" | "name" | "city" | "state"> | null;
+};
+
+export async function getScholarshipById(id: string): Promise<ScholarshipWithCollege | null> {
+  const sb = await createSupabaseServerClient();
+  const { data, error } = await sb
+    .from("scholarships")
+    .select("*, college:colleges(id, slug, name, city, state)")
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return (data as ScholarshipWithCollege) ?? null;
+}

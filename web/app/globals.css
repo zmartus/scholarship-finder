@@ -1,103 +1,264 @@
 @import "tailwindcss";
 
 :root {
-  /* Editorial palette - warm paper, deep navy, terracotta */
-  --paper:        #FAF6EF;
-  --paper-deep:   #F2EBDC;
-  --rule:         #E2D9C6;
-  --rule-strong:  #C9BFA8;
-  --ink:          #14110D;
-  --ink-soft:     #3A332A;
-  --ink-muted:    #6B6354;
-  --navy:         #0E2148;
-  --navy-soft:    #1E3666;
-  --terracotta:   #C0461E;
-  --terracotta-bright: #D85428;
-  --sage:         #7A8966;
-  --gold:         #B98E2D;
+  /* Dark navy canvas */
+  --bg:           #07091A;
+  --bg-soft:      #0B0F23;
+  --bg-elev:      #101535;
+  --bg-elev-2:    #161D45;
+
+  /* Borders / lines */
+  --border:       #1E274D;
+  --border-soft:  #161E3B;
+  --border-strong:#293461;
+
+  /* Text */
+  --fg:           #F4F5FB;
+  --fg-soft:      #B7BCD8;
+  --fg-muted:     #757CA1;
+  --fg-faint:     #4E5478;
+
+  /* Brand gradient stops */
+  --cyan:    #22D3EE;
+  --teal:    #14B8A6;
+  --purple:  #A855F7;
+  --indigo:  #6366F1;
+  --pink:    #EC4899;
+  --rose:    #F472B6;
+
+  --check:   #2DD4BF;
 }
 
 @theme inline {
-  --color-paper: var(--paper);
-  --color-paper-deep: var(--paper-deep);
-  --color-rule: var(--rule);
-  --color-rule-strong: var(--rule-strong);
-  --color-ink: var(--ink);
-  --color-ink-soft: var(--ink-soft);
-  --color-ink-muted: var(--ink-muted);
-  --color-navy: var(--navy);
-  --color-navy-soft: var(--navy-soft);
-  --color-terracotta: var(--terracotta);
-  --color-terracotta-bright: var(--terracotta-bright);
-  --color-sage: var(--sage);
-  --color-gold: var(--gold);
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
+  --color-bg-elev: var(--bg-elev);
+  --color-bg-elev-2: var(--bg-elev-2);
+  --color-border: var(--border);
+  --color-border-soft: var(--border-soft);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-fg-soft: var(--fg-soft);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+  --color-cyan: var(--cyan);
+  --color-teal: var(--teal);
+  --color-purple: var(--purple);
+  --color-indigo: var(--indigo);
+  --color-pink: var(--pink);
+  --color-rose: var(--rose);
+  --color-check: var(--check);
 
-  --font-display: var(--font-fraunces);
   --font-sans: var(--font-jakarta);
   --font-mono: var(--font-jetbrains);
 }
 
-html, body { background: var(--paper); color: var(--ink); }
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+}
 
 body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  font-feature-settings: "ss01", "cv11";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  letter-spacing: -0.005em;
 }
 
-/* Subtle paper texture - very gentle noise */
+/* Subtle ambient glows in the background */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.035;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.7'/></svg>");
+  background:
+    radial-gradient(60rem 40rem at 80% -10%, rgba(168, 85, 247, 0.18), transparent 60%),
+    radial-gradient(50rem 30rem at -10% 30%, rgba(34, 211, 238, 0.12), transparent 60%),
+    radial-gradient(40rem 30rem at 50% 110%, rgba(236, 72, 153, 0.10), transparent 60%);
 }
 
-/* Editorial display utilities */
-.font-display { font-family: var(--font-display), Georgia, serif; font-feature-settings: "ss01"; }
-.font-mono    { font-family: var(--font-mono),    ui-monospace,    monospace; }
+::selection { background: rgba(168, 85, 247, 0.6); color: white; }
 
-/* Numbered ornament */
-.ornament-num {
-  font-family: var(--font-display), serif;
-  font-style: italic;
-  font-variant-numeric: oldstyle-nums;
-  color: var(--terracotta);
+/* === Reusable utility classes ===================================== */
+
+/* Brand gradient — text */
+.gradient-text {
+  background: linear-gradient(95deg, var(--cyan) 0%, var(--purple) 50%, var(--pink) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
-/* Hairline rule */
-.hairline { border-color: var(--rule); }
+/* Brand gradient — background */
+.gradient-bg {
+  background: linear-gradient(95deg, var(--cyan) 0%, var(--purple) 50%, var(--pink) 100%);
+}
+.gradient-bg-soft {
+  background:
+    linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(168, 85, 247, 0.18) 50%, rgba(236, 72, 153, 0.18));
+}
 
-/* Smooth selection */
-::selection { background: var(--terracotta); color: var(--paper); }
+/* Pill button — gradient solid */
+.btn-gradient {
+  background: linear-gradient(95deg, var(--cyan) 0%, var(--purple) 50%, var(--pink) 100%);
+  color: #0B0F23;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.875rem 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.2s ease, box-shadow 0.3s ease, filter 0.2s ease;
+  box-shadow: 0 0 0 0 rgba(168, 85, 247, 0);
+}
+.btn-gradient:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 12px 36px -12px rgba(168, 85, 247, 0.6);
+}
 
-/* Page-load reveal animation */
+/* Pill button — outlined ghost */
+.btn-ghost {
+  border: 1px solid var(--border-strong);
+  color: var(--fg);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 999px;
+  padding: 0.875rem 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--purple);
+}
+
+/* Dark pill on gradient surfaces */
+.btn-dark-on-gradient {
+  background: var(--bg-soft);
+  color: var(--fg);
+  border-radius: 999px;
+  padding: 0.95rem 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.btn-dark-on-gradient:hover {
+  transform: translateY(-1px);
+  background: var(--bg);
+}
+
+/* Card surface */
+.card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.005));
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+.card:hover {
+  border-color: var(--border-strong);
+}
+
+/* Match-card style (translucent + gradient ring on hover) */
+.match-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.005));
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+}
+
+/* Pill badge with sparkle */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--fg-soft);
+  font-size: 0.85rem;
+}
+
+/* Gradient circular icon container */
+.icon-orb {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--cyan), var(--purple) 60%, var(--pink));
+  color: var(--bg);
+  position: relative;
+}
+.icon-orb::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
+  filter: blur(14px);
+  opacity: 0.45;
+  z-index: -1;
+}
+
+/* Logo orb (smaller) */
+.logo-orb {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(from 220deg, var(--cyan), var(--purple), var(--pink), var(--cyan));
+  position: relative;
+}
+.logo-orb svg { color: var(--bg); position: relative; z-index: 1; }
+.logo-orb::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: inherit;
+  filter: blur(10px);
+  opacity: 0.5;
+  z-index: 0;
+}
+
+/* Page-load reveal */
 @keyframes lift-in {
   0%   { opacity: 0; transform: translateY(0.6rem); }
   100% { opacity: 1; transform: translateY(0); }
 }
 .lift-in { opacity: 0; animation: lift-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
 
-/* Gentle underline grow on links */
-.link-grow {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-size: 0% 1px;
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  transition: background-size 0.3s ease;
+/* Slow gradient sweep on the CTA band */
+@keyframes sheen {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
 }
-.link-grow:hover { background-size: 100% 1px; }
+.gradient-sweep {
+  background:
+    linear-gradient(95deg, var(--cyan), var(--indigo) 35%, var(--purple) 60%, var(--pink) 100%);
+  background-size: 200% 100%;
+  animation: sheen 9s ease-in-out infinite alternate;
+}
 
-/* Card hover lift */
-.card-lift {
-  transition: transform 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+/* Floating glow for hero illustration */
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
 }
-.card-lift:hover {
-  transform: translateY(-2px);
-  border-color: var(--ink);
+.float-soft { animation: float-soft 5s ease-in-out infinite; }
+
+/* Twinkle for stars */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.35; transform: scale(0.9); }
+  50%      { opacity: 1;    transform: scale(1.1); }
 }
+.twinkle { animation: twinkle 2.6s ease-in-out infinite; }

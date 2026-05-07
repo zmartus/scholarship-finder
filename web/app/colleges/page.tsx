@@ -9,118 +9,95 @@ export default async function CollegesPage({ searchParams }: { searchParams: Sea
   const colleges = await listColleges(query || undefined);
 
   return (
-    <div className="mx-auto max-w-[1400px] px-6 sm:px-10 py-12 lg:py-20">
-      {/* Header ========================================================== */}
-      <div className="grid grid-cols-12 gap-6 items-end mb-12 lg:mb-16">
-        <div className="col-span-12 lg:col-span-3">
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-muted">
-            Section · Browse
-          </p>
-        </div>
-        <div className="col-span-12 lg:col-span-9">
-          <h1
-            className="font-display text-5xl sm:text-7xl lg:text-[5.5rem] leading-[0.95] tracking-tight text-ink lift-in"
-            style={{ fontVariationSettings: "'opsz' 144, 'SOFT' 30, 'WONK' 1" }}
-          >
-            Pick your college.
-          </h1>
-          <p
-            className="mt-6 max-w-2xl text-lg text-ink-soft leading-relaxed lift-in"
-            style={{ animationDelay: "120ms" }}
-          >
-            Every scholarship lives under a real school. Start with the one you want — or the
-            one that matches your dorm-life dreams — and we'll show you what's available.
-          </p>
-        </div>
+    <div className="mx-auto max-w-[1100px] px-6 sm:px-10 py-12 lg:py-20">
+      <div className="text-center max-w-2xl mx-auto">
+        <span className="badge-pill">
+          <span className="w-2 h-2 rounded-full bg-cyan" />
+          Browse colleges
+        </span>
+        <h1 className="mt-6 font-extrabold text-4xl sm:text-5xl lg:text-[3.6rem] tracking-[-0.02em] leading-[1.05]">
+          Pick the school <span className="gradient-text">you actually want.</span>
+        </h1>
+        <p className="mt-5 text-lg text-fg-soft">
+          Every scholarship lives under a real college. Start with the one you care about
+          and we'll show you what's available.
+        </p>
       </div>
 
-      {/* Search bar ====================================================== */}
+      {/* Search ========================================================= */}
       <form
         method="get"
         action="/colleges"
-        className="border border-ink bg-paper flex items-stretch lift-in"
-        style={{ animationDelay: "180ms" }}
+        className="mt-10 mx-auto max-w-2xl"
       >
         <label htmlFor="q" className="sr-only">Search colleges</label>
-        <span className="hidden sm:flex items-center px-5 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-muted border-r border-rule">
-          Search
-        </span>
-        <input
-          id="q"
-          name="q"
-          type="search"
-          defaultValue={query}
-          placeholder="Florida, FSU, Santa Fe…"
-          className="flex-1 bg-transparent px-5 py-5 text-lg sm:text-xl text-ink placeholder:text-ink-muted focus:outline-none"
-          autoFocus
-        />
-        <button
-          type="submit"
-          className="bg-ink text-paper px-6 sm:px-8 hover:bg-navy transition-colors text-[15px]"
-        >
-          Find →
-        </button>
+        <div className="relative card p-2 flex items-center gap-2">
+          <span className="pl-3 text-fg-muted">
+            <SearchIcon className="w-5 h-5" />
+          </span>
+          <input
+            id="q"
+            name="q"
+            type="search"
+            defaultValue={query}
+            placeholder="Try Florida, FSU, Santa Fe…"
+            className="flex-1 bg-transparent px-2 py-3 text-lg text-fg placeholder:text-fg-faint focus:outline-none"
+            autoFocus
+          />
+          <button type="submit" className="btn-gradient text-[14px] py-2.5 px-5">
+            Find
+          </button>
+        </div>
       </form>
 
-      {/* Active query meta =============================================== */}
-      <div className="mt-4 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[12px] uppercase tracking-[0.2em] text-ink-muted">
+      {/* Meta line ====================================================== */}
+      <div className="mt-6 flex items-baseline justify-between text-sm text-fg-muted max-w-2xl mx-auto">
         <span>
           {colleges.length} {colleges.length === 1 ? "result" : "results"}
           {query ? ` for "${query}"` : " · all colleges"}
         </span>
         {query && (
-          <Link href="/colleges" className="link-grow">
-            Clear filter ×
+          <Link href="/colleges" className="text-cyan hover:text-fg transition-colors">
+            Clear ×
           </Link>
         )}
       </div>
 
-      {/* Results list ==================================================== */}
-      <div className="mt-10 lg:mt-14">
+      {/* Results ======================================================== */}
+      <div className="mt-10 max-w-3xl mx-auto">
         {colleges.length === 0 ? (
           <EmptyState query={query} />
         ) : (
-          <ul className="border-t border-b border-ink/30 divide-y divide-rule">
+          <ul className="space-y-3">
             {colleges.map((c, idx) => (
               <li key={c.id}>
                 <Link
                   href={`/colleges/${c.slug}`}
-                  className="group block py-8 lg:py-10 hover:bg-paper-deep transition-colors"
+                  className="card group flex items-center gap-5 px-6 py-5 hover:bg-white/[0.03] transition-colors"
                 >
-                  <div className="grid grid-cols-12 gap-4 lg:gap-6 items-baseline">
-                    <span className="col-span-2 sm:col-span-1 font-mono text-sm text-ink-muted pt-2">
-                      {String(idx + 1).padStart(2, "0")}
-                    </span>
-                    <div className="col-span-10 sm:col-span-7">
-                      <h3
-                        className="font-display text-3xl sm:text-4xl lg:text-5xl text-ink leading-tight tracking-tight group-hover:text-terracotta transition-colors"
-                        style={{ fontVariationSettings: "'opsz' 100, 'SOFT' 20" }}
-                      >
-                        {c.name}
-                      </h3>
-                      <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-soft">
-                        <span>{c.city ? `${c.city}, ` : ""}{c.state}</span>
-                        {c.type && (
-                          <>
-                            <span className="text-rule-strong">·</span>
-                            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted">
-                              {c.type.replace(/-/g, " ")}
-                            </span>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                    <div className="hidden sm:flex sm:col-span-4 justify-end items-baseline gap-6">
-                      {c.website && (
-                        <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted truncate max-w-[180px]">
-                          {c.website.replace(/^https?:\/\/(www\.)?/, "")}
-                        </span>
+                  <span className="font-mono text-sm text-fg-faint w-8">
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-xl sm:text-2xl font-bold tracking-tight truncate">
+                      {c.name}
+                    </h3>
+                    <p className="mt-1 text-sm text-fg-soft truncate">
+                      {c.city ? `${c.city}, ` : ""}{c.state}
+                      {c.type && (
+                        <>
+                          <span className="mx-2 text-fg-faint">·</span>
+                          <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted">
+                            {c.type.replace(/-/g, " ")}
+                          </span>
+                        </>
                       )}
-                      <span className="font-mono text-[12px] uppercase tracking-[0.2em] text-ink group-hover:text-terracotta transition-colors whitespace-nowrap">
-                        View scholarships →
-                      </span>
-                    </div>
+                    </p>
                   </div>
+                  <span className="hidden sm:flex items-center gap-2 text-sm text-fg-soft group-hover:text-cyan transition-colors whitespace-nowrap">
+                    View scholarships
+                    <ArrowIcon />
+                  </span>
                 </Link>
               </li>
             ))}
@@ -133,21 +110,37 @@ export default async function CollegesPage({ searchParams }: { searchParams: Sea
 
 function EmptyState({ query }: { query: string }) {
   return (
-    <div className="border border-rule bg-paper-deep p-10 lg:p-16 text-center">
-      <p className="ornament-num text-6xl">∅</p>
-      <h3 className="mt-4 font-display text-2xl sm:text-3xl text-ink tracking-tight">
+    <div className="card text-center py-16 px-8">
+      <div className="mx-auto w-14 h-14 rounded-full border border-border-strong flex items-center justify-center text-fg-muted text-2xl">
+        ⌀
+      </div>
+      <h3 className="mt-5 text-2xl font-bold tracking-tight">
         No colleges match "{query}".
       </h3>
-      <p className="mt-3 max-w-md mx-auto text-ink-soft leading-relaxed">
+      <p className="mt-3 max-w-md mx-auto text-fg-soft leading-relaxed">
         We're starting with North Florida and expanding from there. If your school isn't
-        listed yet, we'd love to know which to add next.
+        listed, we'd love to know which to add next.
       </p>
-      <Link
-        href="/colleges"
-        className="mt-6 inline-flex items-center gap-2 bg-ink text-paper px-5 py-3 text-sm hover:bg-navy transition-colors"
-      >
+      <Link href="/colleges" className="mt-6 btn-gradient inline-flex text-[14px]">
         Show all colleges
       </Link>
     </div>
+  );
+}
+
+function SearchIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <circle cx="11" cy="11" r="7" />
+      <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function ArrowIcon() {
+  return (
+    <svg viewBox="0 0 16 16" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <path d="M3 8h10M9 4l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }

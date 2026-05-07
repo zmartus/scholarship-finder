@@ -110,7 +110,7 @@ export default function HomePage() {
               Smarter than a search bar.
             </h2>
             <p className="mt-5 text-lg text-fg-soft max-w-xl">
-              ScholarshipGuru reads your full profile — not just keywords — and
+              CollegeMoneyAI reads your full profile — not just keywords — and
               explains why each scholarship is worth your time.
             </p>
 

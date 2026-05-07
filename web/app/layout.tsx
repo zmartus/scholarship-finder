@@ -18,9 +18,9 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ScholarshipGuru — AI-powered scholarship matching",
+  title: "CollegeMoneyAI — AI-powered scholarship matching",
   description:
-    "Tell us your dream college, GPA, interests, and activities. We surface scholarships you actually qualify for — and explain exactly why each one fits.",
+    "Tell us your dream college, GPA, interests, and activities. CollegeMoneyAI surfaces scholarships you actually qualify for — and explains exactly why each one fits.",
 };
 
 export default function RootLayout({

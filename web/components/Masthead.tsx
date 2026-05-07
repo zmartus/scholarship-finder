@@ -9,7 +9,7 @@ export function Masthead() {
             <CapIcon className="w-4 h-4" />
           </span>
           <span className="font-bold text-[1.35rem] tracking-tight text-fg">
-            ScholarshipGuru
+            CollegeMoney<span className="gradient-text">AI</span>
           </span>
         </Link>
 

@@ -1,13 +1,30 @@
 # CollegeMoneyAI — MVP Ship Plan
 
-**Goal:** Deployed to a public URL. A high schooler in Gainesville can:
+**Target launch: June 1, 2026.** ~3.5 weeks from May 7 kickoff.
+
+**Goal:** Deployed to a public URL. A high schooler in Florida can:
 1. Land on the page
 2. Fill in a quick profile (no signup)
 3. Pick their college
 4. See real scholarships ranked by AI fit, each with a one-line "why this fits you"
 5. Click through to apply on the official site
 
-That's the whole product for V1. No login, no saved lists, no email reminders, no counselor dashboard. **Ship in 3–4 focused evenings.**
+That's the whole product for V1. No login, no saved lists, no email reminders, no counselor dashboard. **Florida-only for V1.** Out-of-state schools (Juilliard, etc.) come in V1.x once we know users want them.
+
+## Progress as of May 7
+
+- ✅ Repo + tooling scaffolded
+- ✅ Supabase schema + RLS + RPC live
+- ✅ 5 North Florida colleges seeded
+- ✅ 23 real UF scholarships in DB (replaced stub with curated extract from sfa.ufl.edu)
+- ✅ College page surfaces school + state + national scholarships
+- ✅ Landing, /colleges, /colleges/[slug], /scholarships/[id] pages built
+- ✅ Dark gradient AI-product UI locked in
+- ✅ Renamed to CollegeMoneyAI
+- ⏳ CareerOneStop API token registration (in flight)
+- ⏳ Profile builder + AI matching backend
+- ⏳ GitHub Actions cron for daily scraper refresh
+- ⏳ Vercel deployment + custom domain
 
 ---
 

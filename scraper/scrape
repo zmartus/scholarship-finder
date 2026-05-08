@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Wrapper that runs the scraper CLI with src/ on PYTHONPATH.
+# Works around Python 3.14 + macOS .pth hidden-file processing.
+#
+# Usage:
+#   ./scrape --source uf_sfa --dry-run
+#   ./scrape --all
+set -euo pipefail
+cd "$(dirname "$0")"
+PYTHONPATH="$(pwd)/src" ./.venv/bin/python -m scraper.run "$@"

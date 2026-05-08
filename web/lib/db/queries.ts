@@ -51,14 +51,29 @@ export async function getCollegeBySlug(slug: string): Promise<College | null> {
 export async function listScholarshipsForCollege(
   collegeId: string,
 ): Promise<Scholarship[]> {
+  // Surface (a) school/local scholarships tied to this college AND
+  // (b) state-wide scholarships portable to any school in the state AND
+  // (c) national scholarships open to anyone.
   const sb = await createSupabaseServerClient();
+  const { data: college, error: cErr } = await sb
+    .from("colleges")
+    .select("state")
+    .eq("id", collegeId)
+    .single();
+  if (cErr) throw new Error(cErr.message);
+
   const { data, error } = await sb
     .from("scholarships")
     .select("*")
-    .eq("college_id", collegeId)
     .eq("active", true)
+    .or(
+      `college_id.eq.${collegeId},and(scope.eq.state,college_id.is.null),scope.eq.national`,
+    )
     .order("deadline", { ascending: true, nullsFirst: false });
   if (error) throw new Error(error.message);
+  // Note: with our current schema state-wide rows have college_id=null;
+  // if we ever attach them to a specific FL college we'd also dedupe here.
+  void college; // state used to scope national/state in a richer query later
   return (data ?? []) as Scholarship[];
 }
 

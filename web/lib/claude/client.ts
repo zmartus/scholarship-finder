@@ -10,4 +10,5 @@ export function getClaude(): Anthropic {
   return _client;
 }
 
-export const MATCH_MODEL = "claude-sonnet-4-6";
+// Latest Sonnet alias. The API resolves this to the current production model.
+export const MATCH_MODEL = "claude-sonnet-4-7";

@@ -6,6 +6,7 @@ import {
   type Scholarship,
 } from "@/lib/db/queries";
 import { ScholarshipCard } from "@/components/ScholarshipCard";
+import { MatchSection } from "@/components/MatchSection";
 import { formatAmount, daysUntil } from "@/lib/format";
 
 type Params = Promise<{ slug: string }>;
@@ -94,6 +95,13 @@ export default async function CollegePage({
           accent={stats.nextDeadlineDays != null && stats.nextDeadlineDays <= 30}
         />
       </section>
+
+      {/* AI MATCHES (or profile-builder CTA) ============================= */}
+      <MatchSection
+        collegeSlug={slug}
+        collegeName={college.name}
+        scholarshipMap={Object.fromEntries(all.map((s) => [s.id, s]))}
+      />
 
       {/* Filter row ===================================================== */}
       <section className="mt-14 flex flex-wrap items-baseline justify-between gap-4">

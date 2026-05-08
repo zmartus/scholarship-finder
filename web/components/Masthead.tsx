@@ -14,12 +14,12 @@ export function Masthead() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 text-[15px] text-fg-soft">
-          <Link href="#how-it-works" className="hover:text-fg transition-colors">How it works</Link>
-          <Link href="#features" className="hover:text-fg transition-colors">Features</Link>
-          <Link href="#faq" className="hover:text-fg transition-colors">FAQ</Link>
+          <Link href="/colleges" className="hover:text-fg transition-colors">Browse</Link>
+          <Link href="/profile" className="hover:text-fg transition-colors">Profile</Link>
+          <Link href="/about" className="hover:text-fg transition-colors">About</Link>
         </nav>
 
-        <Link href="/colleges" className="btn-ghost text-[14px] py-2.5 px-5">
+        <Link href="/profile" className="btn-ghost text-[14px] py-2.5 px-5">
           Get started
         </Link>
       </div>

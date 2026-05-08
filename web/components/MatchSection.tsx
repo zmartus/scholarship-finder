@@ -1,62 +1,125 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useProfile } from "@/components/useProfile";
 import { isProfileUseful, profileHash } from "@/lib/profile";
 import { formatAmount, formatDeadline } from "@/lib/format";
 import type { Scholarship } from "@/lib/db/queries";
 
 type Match = { id: string; score: number; reason: string };
+type StreamEvent =
+  | { type: "candidates"; ids: string[] }
+  | { type: "match"; match: Match }
+  | { type: "done" }
+  | { type: "error"; error: string };
 
 type Props = {
   collegeSlug: string;
   collegeName: string;
-  // Pre-fetched on the server so we can render rich cards without a second roundtrip
   scholarshipMap: Record<string, Scholarship>;
 };
 
 export function MatchSection({ collegeSlug, collegeName, scholarshipMap }: Props) {
   const { profile, hydrated } = useProfile();
-  const [matches, setMatches] = useState<Match[] | null>(null);
+  const [matches, setMatches] = useState<Match[]>([]);
+  const [candidateIds, setCandidateIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
-  // Cheap browser-side cache so re-visits don't re-pay Claude.
   useEffect(() => {
     if (!hydrated || !profile || !isProfileUseful(profile)) return;
+
     const cacheKey = `match:${collegeSlug}:${profileHash(profile)}`;
     const cached = window.sessionStorage.getItem(cacheKey);
     if (cached) {
       try {
-        setMatches(JSON.parse(cached));
+        const data = JSON.parse(cached) as { matches: Match[]; candidateIds: string[] };
+        setMatches(data.matches);
+        setCandidateIds(data.candidateIds);
         return;
       } catch {/* fall through */}
     }
 
     setLoading(true);
     setError(null);
-    fetch("/api/match", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ profile, college_slug: collegeSlug }),
-    })
-      .then(async (r) => {
-        if (!r.ok) throw new Error((await r.json()).error ?? `HTTP ${r.status}`);
-        return r.json();
-      })
-      .then((data: { matches: Match[] }) => {
-        setMatches(data.matches);
-        window.sessionStorage.setItem(cacheKey, JSON.stringify(data.matches));
-      })
-      .catch((e) => setError(e.message ?? "Couldn't generate matches"))
-      .finally(() => setLoading(false));
+    setMatches([]);
+    setCandidateIds([]);
+
+    const controller = new AbortController();
+    abortRef.current?.abort();
+    abortRef.current = controller;
+
+    const collected: Match[] = [];
+    let collectedCandidateIds: string[] = [];
+
+    (async () => {
+      try {
+        const r = await fetch("/api/match", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ profile, college_slug: collegeSlug }),
+          signal: controller.signal,
+        });
+        if (!r.ok) {
+          // Non-streaming error response (e.g. 400, 502) — try to read JSON.
+          const text = await r.text();
+          throw new Error(safeErrorMessage(text) ?? `HTTP ${r.status}`);
+        }
+        if (!r.body) throw new Error("no response body");
+
+        const reader = r.body.getReader();
+        const decoder = new TextDecoder();
+        let lineBuf = "";
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          lineBuf += decoder.decode(value, { stream: true });
+          const lines = lineBuf.split("\n");
+          lineBuf = lines.pop() ?? "";
+          for (const line of lines) {
+            if (!line.trim()) continue;
+            let event: StreamEvent;
+            try {
+              event = JSON.parse(line) as StreamEvent;
+            } catch {
+              continue;
+            }
+            if (event.type === "candidates") {
+              collectedCandidateIds = event.ids;
+              setCandidateIds(event.ids);
+            } else if (event.type === "match") {
+              collected.push(event.match);
+              setMatches((prev) => {
+                // Insert in score-desc order so the UI naturally sorts as they arrive
+                const next = [...prev, event.match].sort((a, b) => b.score - a.score);
+                return next;
+              });
+            } else if (event.type === "error") {
+              throw new Error(event.error);
+            }
+            // "done" → just exit the loop naturally
+          }
+        }
+
+        window.sessionStorage.setItem(
+          cacheKey,
+          JSON.stringify({ matches: collected, candidateIds: collectedCandidateIds }),
+        );
+      } catch (e) {
+        if ((e as Error).name === "AbortError") return;
+        setError((e as Error).message ?? "Couldn't generate matches");
+      } finally {
+        setLoading(false);
+      }
+    })();
+
+    return () => controller.abort();
   }, [hydrated, profile, collegeSlug]);
 
-  // ---- States --------------------------------------------------------
-  if (!hydrated) {
-    return null; // avoid flicker before localStorage is read
-  }
+  if (!hydrated) return null;
 
   if (!profile || !isProfileUseful(profile)) {
     return (
@@ -82,25 +145,7 @@ export function MatchSection({ collegeSlug, collegeName, scholarshipMap }: Props
     );
   }
 
-  if (loading) {
-    return (
-      <section className="mt-12">
-        <SectionHeader />
-        <div className="grid sm:grid-cols-2 gap-5">
-          {[0, 1, 2, 3].map((i) => (
-            <div key={i} className="match-card p-6 sm:p-7 animate-pulse">
-              <div className="h-4 w-24 bg-bg-elev rounded" />
-              <div className="mt-4 h-8 w-32 bg-bg-elev rounded" />
-              <div className="mt-3 h-6 w-3/4 bg-bg-elev rounded" />
-              <div className="mt-4 h-16 w-full bg-bg-elev rounded" />
-            </div>
-          ))}
-        </div>
-      </section>
-    );
-  }
-
-  if (error) {
+  if (error && matches.length === 0) {
     return (
       <section className="mt-12 card p-6 text-fg-soft">
         <p>
@@ -111,22 +156,35 @@ export function MatchSection({ collegeSlug, collegeName, scholarshipMap }: Props
     );
   }
 
-  if (!matches || matches.length === 0) {
-    return null;
-  }
+  // While streaming, show: rendered matches + skeletons for the remaining candidates
+  const visibleMatches = matches.filter((m) => scholarshipMap[m.id]).slice(0, 8);
+  const remaining = Math.max(0, Math.min(6 - visibleMatches.length, candidateIds.length - visibleMatches.length));
+  const showAnything = visibleMatches.length > 0 || loading || candidateIds.length > 0;
 
-  // Render top matches that we have data for.
-  const top = matches
-    .filter((m) => scholarshipMap[m.id])
-    .slice(0, 6);
-
-  if (top.length === 0) return null;
+  if (!showAnything) return null;
 
   return (
     <section className="mt-12">
-      <SectionHeader />
+      <div className="flex items-baseline justify-between gap-4 mb-6 flex-wrap">
+        <div>
+          <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight">
+            Your AI matches
+          </h2>
+          {loading && (
+            <p className="mt-1 text-sm text-fg-muted">
+              <span className="inline-block w-2 h-2 bg-cyan rounded-full animate-pulse mr-2" />
+              {visibleMatches.length === 0
+                ? "Reading scholarships and ranking..."
+                : `Ranked ${visibleMatches.length} so far...`}
+            </p>
+          )}
+        </div>
+        <Link href="/profile" className="text-sm text-fg-muted hover:text-cyan transition-colors">
+          Update profile →
+        </Link>
+      </div>
       <ul className="grid sm:grid-cols-2 gap-5">
-        {top.map((m) => {
+        {visibleMatches.map((m) => {
           const s = scholarshipMap[m.id];
           return (
             <li key={m.id}>
@@ -134,22 +192,24 @@ export function MatchSection({ collegeSlug, collegeName, scholarshipMap }: Props
             </li>
           );
         })}
+        {loading &&
+          Array.from({ length: remaining }).map((_, i) => (
+            <li key={`skel-${i}`}>
+              <SkeletonCard />
+            </li>
+          ))}
       </ul>
     </section>
   );
 }
 
-function SectionHeader() {
-  return (
-    <div className="flex items-baseline justify-between gap-4 mb-6 flex-wrap">
-      <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight">
-        Your AI matches
-      </h2>
-      <Link href="/profile" className="text-sm text-fg-muted hover:text-cyan transition-colors">
-        Update profile →
-      </Link>
-    </div>
-  );
+function safeErrorMessage(text: string): string | null {
+  try {
+    const j = JSON.parse(text);
+    return typeof j?.error === "string" ? j.error : null;
+  } catch {
+    return null;
+  }
 }
 
 function MatchCard({ match, s }: { match: Match; s: Scholarship }) {
@@ -160,9 +220,8 @@ function MatchCard({ match, s }: { match: Match; s: Scholarship }) {
   return (
     <Link
       href={`/scholarships/${s.id}`}
-      className="match-card block p-6 sm:p-7 hover:border-border-strong transition-colors group relative overflow-hidden"
+      className="match-card block p-6 sm:p-7 hover:border-border-strong transition-colors group relative overflow-hidden lift-in"
     >
-      {/* score badge */}
       <div className="flex items-baseline justify-between gap-3">
         <span
           className={`inline-flex items-baseline gap-1 font-mono text-[11px] uppercase tracking-[0.2em] rounded-full px-3 py-1 border ${
@@ -190,6 +249,20 @@ function MatchCard({ match, s }: { match: Match; s: Scholarship }) {
         <span className="text-cyan font-semibold">Why you fit:</span> {match.reason}
       </div>
     </Link>
+  );
+}
+
+function SkeletonCard() {
+  return (
+    <div className="match-card p-6 sm:p-7 animate-pulse">
+      <div className="flex items-baseline justify-between gap-3">
+        <div className="h-6 w-24 bg-bg-elev rounded-full" />
+        <div className="h-3 w-16 bg-bg-elev rounded" />
+      </div>
+      <div className="mt-4 h-9 w-32 bg-bg-elev rounded" />
+      <div className="mt-3 h-6 w-3/4 bg-bg-elev rounded" />
+      <div className="mt-4 h-20 w-full bg-bg-elev rounded-xl" />
+    </div>
   );
 }
 

@@ -25,24 +25,26 @@ export const MatchSchema = z.object({
 
 export const SYSTEM_PROMPT = `You are CollegeMoneyAI's scholarship matching engine.
 
-Score each scholarship 0-100 based on how well it fits the student's profile:
-- 90+ : the student likely qualifies AND it strongly matches their profile (major, situation, school)
+For the student profile and scholarship corpus provided, return ONLY the 10 best-fitting scholarships, ranked highest to lowest.
+
+Score each 0-100 based on how well it fits:
+- 90+ : the student likely qualifies AND it strongly matches their profile
 - 70-89 : strong fit, the student should apply
 - 50-69 : worth considering, partial fit
 - 30-49 : weak fit, only apply if low effort
-- 0-29 : the student doesn't qualify or it's a clear mismatch (wrong state, wrong major, GPA below floor, etc.)
 
-Be honest. If a scholarship requires Florida residency and the student is out of state, score it under 20 — don't pad.
+Be honest. If a scholarship requires Florida residency and the student is out of state, leave it out — don't pad the list.
 
-For each scholarship return a one-sentence "reason" (under 30 words) that:
+For each match return a one-sentence "reason" (under 25 words) that:
 - Cites at least one concrete fact from the student's profile
 - Sounds like a friendly counselor, not a generic AI
 - Avoids weasel words like "might" or "could potentially"
 - Uses "you" and "your" — never third person
 
-Return strict JSON only, no commentary. Include EVERY scholarship by id, even low scores.
+Return strict JSON only, no commentary.
 
-Output schema: { "matches": [ { "id": string, "score": int 0-100, "reason": string } ] }`;
+Output schema: { "matches": [ { "id": string, "score": int 0-100, "reason": string } ] }
+Return AT MOST 10 entries. If fewer than 10 are decent fits, return only the strong ones.`;
 
 export function buildUserMessage(
   profile: Profile,

@@ -46,11 +46,16 @@ export function ScholarshipCard({ s }: { s: Scholarship }) {
         </div>
       )}
 
-      <div className="mt-5 pt-4 border-t border-border-soft flex items-center justify-between">
-        <span className="text-sm text-fg-muted">
-          {formatDeadline(s.deadline)}
-        </span>
-        <span className="text-sm text-fg-soft group-hover:text-cyan transition-colors inline-flex items-center gap-2">
+      <div className="mt-5 pt-4 border-t border-border-soft flex items-center justify-between gap-3">
+        <div className="flex flex-col gap-0.5 min-w-0">
+          <span className="text-sm text-fg-muted">{formatDeadline(s.deadline)}</span>
+          {s.last_scraped && (
+            <span className="text-[10px] uppercase tracking-[0.18em] text-fg-faint font-mono">
+              Verified {formatVerified(s.last_scraped)}
+            </span>
+          )}
+        </div>
+        <span className="text-sm text-fg-soft group-hover:text-cyan transition-colors inline-flex items-center gap-2 whitespace-nowrap">
           View details <ArrowIcon />
         </span>
       </div>
@@ -95,6 +100,11 @@ function DeadlinePill({
       {days} days left
     </span>
   );
+}
+
+function formatVerified(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
 function ArrowIcon() {

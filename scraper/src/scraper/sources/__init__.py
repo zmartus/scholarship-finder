@@ -1,8 +1,12 @@
 from .base import Source
+from .florida_state import FloridaState
+from .nationals import Nationals
 from .uf_sfa import UFStudentFinancialAffairs
 
 REGISTRY: dict[str, type[Source]] = {
     "uf_sfa": UFStudentFinancialAffairs,
+    "nationals": Nationals,
+    "florida_state": FloridaState,
 }
 
 

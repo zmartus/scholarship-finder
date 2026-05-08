@@ -173,16 +173,7 @@ def _items() -> list[ScholarshipItem]:
             "eligibility_text": "First-time-in-college student admitted to the UF Honors Program through Early Action. Considered automatically; finalists interview.",
             "tags": ["merit", "honors", "top-tier", "summer-enrichment"],
         },
-        {
-            "external_id": "uf-benacquisto",
-            "name": "Benacquisto Scholarship",
-            "amount_min": None, "amount_max": None,
-            "deadline": NEXT_NOV_1,
-            "scope": "state", "college_slug": UF_SLUG,
-            "description": "Covers the standard institutional cost of attendance (minus Bright Futures and National Merit awards) at any Florida state university. Effectively a full ride for National Merit Scholars who attend a Florida public school.",
-            "eligibility_text": "Florida resident; U.S. citizen or eligible noncitizen; National Merit Scholar (Finalist or Scholar status); standard Florida high school diploma; full-time enrollment in a baccalaureate program; initial enrollment the fall immediately after high school graduation.",
-            "tags": ["merit", "national-merit", "florida-resident", "full-ride"],
-        },
+        # Benacquisto moved to florida_state source (it's portable to any FL public school).
         {
             "external_id": "uf-grandparent-waiver",
             "name": "Grandparent Waiver of Out-of-State Tuition and Fees",
@@ -266,17 +257,8 @@ def _items() -> list[ScholarshipItem]:
             "tags": ["endowed", "pay-it-forward"],
         },
 
-        # === State-wide programs (work at UF, FSU, UCF, etc.) =============
-        {
-            "external_id": "fl-bright-futures",
-            "name": "Florida Bright Futures Scholarship",
-            "amount_min": None, "amount_max": None,
-            "deadline": date(2026, 8, 31),
-            "scope": "state", "college_slug": None,
-            "description": "Florida lottery-funded merit scholarship. Multiple award levels (Florida Academic, Florida Medallion, Florida Gold Seal Vocational) covering a percentage of tuition at Florida public colleges and universities.",
-            "eligibility_text": "Florida high school graduate; Florida resident; meet GPA, test score, and community service hour thresholds; complete the Florida Financial Aid Application by Aug 31 of the year of high school graduation.",
-            "tags": ["merit", "florida-resident", "in-state", "lottery-funded", "state-wide"],
-        },
+        # State-wide programs (Bright Futures + tiers, FSAG, etc.) live in
+        # the florida_state source — they're portable to all FL public schools.
     ]
 
     items: list[ScholarshipItem] = []

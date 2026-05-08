@@ -24,4 +24,6 @@ def test_uf_corpus_includes_known_anchors():
     # If any of these go missing, we know the source got truncated.
     assert any("Machen Florida Opportunity" in n for n in names)
     assert any("Presidential" in n for n in names)
-    assert any("Bright Futures" in n for n in names)
+    assert any("Stamps Scholars" in n for n in names)
+    # State-wide programs (Bright Futures, Benacquisto, FSAG) live in
+    # the florida_state source — see test_florida_state.py.

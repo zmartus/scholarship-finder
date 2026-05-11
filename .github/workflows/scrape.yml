@@ -1,8 +1,11 @@
 name: scrape
 
 on:
-  schedule:
-    - cron: "0 */6 * * *"   # every 6 hours
+  # Scheduled run is disabled while scholarships are hand-curated.
+  # Re-enable once real scrapers exist (FSU/UCF/USF + CareerOneStop) and the
+  # GH repo secrets SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY are set.
+  # schedule:
+  #   - cron: "0 */6 * * *"   # every 6 hours
   workflow_dispatch: {}
 
 jobs:

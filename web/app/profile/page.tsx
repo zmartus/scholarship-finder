@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import { useProfile } from "@/components/useProfile";
 import { ATTRIBUTE_OPTIONS, EMPTY_PROFILE, type Profile } from "@/lib/profile";
 
@@ -13,10 +13,23 @@ const US_STATES = [
 ];
 
 export default function ProfilePage() {
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-[820px] px-6 sm:px-10 py-12 lg:py-20" />}>
+      <ProfileForm />
+    </Suspense>
+  );
+}
+
+function ProfileForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { profile, hydrated, replace } = useProfile();
   const [draft, setDraft] = useState<Profile>(EMPTY_PROFILE);
   const [saved, setSaved] = useState(false);
+
+  // Read context from the URL — set when the user came here from a college page.
+  const nextPath = searchParams.get("next");
+  const forCollege = searchParams.get("for"); // human-readable college name
 
   // Initialize draft from stored profile once hydrated.
   useEffect(() => {
@@ -43,23 +56,26 @@ export default function ProfilePage() {
     e.preventDefault();
     replace(draft);
     setSaved(true);
-    // Smooth nudge — let user see "Saved" then route to the colleges page.
-    setTimeout(() => router.push("/colleges"), 600);
+    // Smooth nudge — let user see "Saved" then route them.
+    // If they came from a college page, send them straight back to matches.
+    const destination = nextPath && isSafeNextPath(nextPath) ? nextPath : "/colleges";
+    setTimeout(() => router.push(destination), 600);
   }
 
   return (
     <div className="mx-auto max-w-[820px] px-6 sm:px-10 py-12 lg:py-20">
       <Link
-        href="/"
+        href={nextPath && isSafeNextPath(nextPath) ? "/colleges" : "/"}
         className="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-cyan transition-colors"
       >
-        <span aria-hidden>←</span> Back home
+        <span aria-hidden>←</span>{" "}
+        {nextPath && isSafeNextPath(nextPath) ? "Change school" : "Back home"}
       </Link>
 
       <header className="mt-6">
         <span className="badge-pill">
           <span className="w-2 h-2 rounded-full bg-cyan" />
-          Step 1 of 2 — Build your profile
+          Step 2 of 2 — Tell us about you
         </span>
         <h1 className="mt-5 font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-[-0.02em] leading-[1.05]">
           Tell us about <span className="gradient-text">you.</span>
@@ -70,6 +86,29 @@ export default function ProfilePage() {
           apply.
         </p>
       </header>
+
+      {/* School confirmation banner — only when arriving from a college page */}
+      {forCollege && nextPath && isSafeNextPath(nextPath) && (
+        <div className="mt-8 rounded-2xl border border-cyan/30 bg-cyan/5 p-5 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <span className="w-9 h-9 rounded-full bg-cyan/15 border border-cyan/40 flex items-center justify-center flex-shrink-0">
+              <CapIcon className="w-4 h-4 text-cyan" />
+            </span>
+            <div className="min-w-0">
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted">
+                Building profile for
+              </p>
+              <p className="mt-0.5 text-lg font-bold text-fg truncate">{forCollege}</p>
+            </div>
+          </div>
+          <Link
+            href="/colleges"
+            className="text-sm text-fg-soft hover:text-cyan transition-colors whitespace-nowrap"
+          >
+            Change school →
+          </Link>
+        </div>
+      )}
 
       <form onSubmit={onSubmit} className="mt-12 space-y-10">
         {/* Basics =================================================== */}
@@ -178,7 +217,11 @@ export default function ProfilePage() {
         {/* Submit =================================================== */}
         <div className="flex flex-wrap items-center gap-4 pt-2">
           <button type="submit" className="btn-gradient text-[15px]">
-            {saved ? "Saved ✓" : "Save profile & see matches →"}
+            {saved
+              ? "Saved ✓"
+              : forCollege
+                ? `Save & see matches for ${forCollege} →`
+                : "Save profile & see matches →"}
           </button>
           <p className="text-sm text-fg-muted">
             Stays on this device. We never send it to a server we control.
@@ -186,6 +229,20 @@ export default function ProfilePage() {
         </div>
       </form>
     </div>
+  );
+}
+
+/**
+ * Whitelist redirect targets so a malicious link can't bounce us off-site.
+ * We only allow relative paths under /colleges/ or /scholarships/.
+ */
+function isSafeNextPath(path: string): boolean {
+  if (!path.startsWith("/")) return false;
+  if (path.startsWith("//")) return false; // protocol-relative
+  return (
+    path.startsWith("/colleges/") ||
+    path.startsWith("/colleges") ||
+    path.startsWith("/scholarships/")
   );
 }
 
@@ -230,5 +287,23 @@ function Field({
       {children}
       {hint && <span className="mt-1 block text-xs text-fg-muted">{hint}</span>}
     </label>
+  );
+}
+
+function CapIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden
+    >
+      <path d="M22 10L12 5 2 10l10 5 10-5z" />
+      <path d="M6 12v5c3 2 9 2 12 0v-5" />
+    </svg>
   );
 }

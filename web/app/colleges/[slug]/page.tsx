@@ -39,12 +39,12 @@ export default async function CollegePage({
 
   return (
     <div className="mx-auto max-w-[1100px] px-6 sm:px-10 py-12 lg:py-20">
-      {/* Breadcrumb */}
+      {/* Breadcrumb / change-school */}
       <Link
         href="/colleges"
         className="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-cyan transition-colors"
       >
-        <span aria-hidden>←</span> Browse colleges
+        <span aria-hidden>←</span> Change school
       </Link>
 
       {/* Header ========================================================= */}

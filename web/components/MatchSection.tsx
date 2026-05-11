@@ -137,7 +137,10 @@ export function MatchSection({ collegeSlug, collegeName, scholarshipMap }: Props
               and tells you exactly why each one is worth your time.
             </p>
           </div>
-          <Link href="/profile" className="btn-gradient text-[15px]">
+          <Link
+            href={`/profile?next=/colleges/${collegeSlug}&for=${encodeURIComponent(collegeName)}`}
+            className="btn-gradient text-[15px]"
+          >
             Build my profile <ArrowIcon />
           </Link>
         </div>

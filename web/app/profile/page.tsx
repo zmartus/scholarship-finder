@@ -166,7 +166,7 @@ function ProfileForm() {
                 type="text"
                 value={draft.high_school ?? ""}
                 onChange={(e) => set("high_school", e.target.value || null)}
-                placeholder="e.g. Buchholz High School (Gainesville)"
+                placeholder="e.g. Buchholz High School, Gainesville · or Tampa Catholic, Tampa"
                 className="form-input"
               />
             </Field>
@@ -209,7 +209,7 @@ function ProfileForm() {
             value={draft.interests ?? ""}
             onChange={(e) => set("interests", e.target.value || null)}
             rows={5}
-            placeholder="e.g. Robotics club captain, varsity soccer, 200+ hours volunteering at the Alachua County animal shelter, part-time barista, plays piano."
+            placeholder="e.g. Robotics club captain, varsity soccer, 200+ hours volunteering at a local animal shelter, part-time barista, plays piano."
             className="form-input min-h-[120px] resize-y"
           />
         </Fieldset>

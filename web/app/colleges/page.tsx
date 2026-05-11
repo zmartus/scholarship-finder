@@ -40,7 +40,7 @@ export default async function CollegesPage({ searchParams }: { searchParams: Sea
             name="q"
             type="search"
             defaultValue={query}
-            placeholder="Try Florida, FSU, Santa Fe…"
+            placeholder="Try University of Florida, FSU, UCF…"
             className="flex-1 bg-transparent px-2 py-3 text-lg text-fg placeholder:text-fg-faint focus:outline-none"
             autoFocus
           />
@@ -118,8 +118,7 @@ function EmptyState({ query }: { query: string }) {
         No colleges match "{query}".
       </h3>
       <p className="mt-3 max-w-md mx-auto text-fg-soft leading-relaxed">
-        We're starting with North Florida and expanding from there. If your school isn't
-        listed, we'd love to know which to add next.
+        We cover most Florida colleges. If your school isn't listed, tell me which one and I'll add it next.
       </p>
       <Link href="/colleges" className="mt-6 btn-gradient inline-flex text-[14px]">
         Show all colleges

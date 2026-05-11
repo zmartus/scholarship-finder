@@ -42,14 +42,19 @@ export default function AboutPage() {
 
         <h2 className="text-2xl font-bold text-fg pt-4">How the data works</h2>
         <p>
-          Every scholarship in the database is hand-verified against its official source. The
-          University of Florida list comes from{" "}
+          Every scholarship in the database is hand-verified against its official source.{" "}
+          <strong className="text-fg">State-level awards</strong> like Florida Bright Futures and FSAG come from the{" "}
+          <a className="text-cyan hover:underline" href="https://www.floridastudentfinancialaidsg.org/" target="_blank" rel="noopener noreferrer">
+            Florida Department of Education
+          </a>{" "}
+          and apply to every Florida college student.{" "}
+          <strong className="text-fg">National scholarships</strong> are pulled directly from each foundation&apos;s
+          own application page.{" "}
+          <strong className="text-fg">School-specific awards</strong> are added one college at a time —{" "}
           <a className="text-cyan hover:underline" href="https://www.sfa.ufl.edu/types-of-aid/scholarships/" target="_blank" rel="noopener noreferrer">
-            UF Office of Student Financial Affairs
-          </a>
-          . Florida Bright Futures and the state-funded grants come from the Florida
-          Department of Education. National scholarships are pulled directly from each
-          foundation&apos;s own application page.
+            UF&apos;s
+          </a>{" "}
+          are live, and FSU, UCF, USF and others are next on the list.
         </p>
         <p>
           Every scholarship card shows a <em>Last verified</em> date. If a deadline shifts mid-cycle,
@@ -59,12 +64,12 @@ export default function AboutPage() {
 
         <h2 className="text-2xl font-bold text-fg pt-4">Don&apos;t see your school?</h2>
         <p>
-          We&apos;re starting in North Florida and expanding by demand. If you want a school
-          we don&apos;t cover yet — UCF, USF, Florida Tech, or anywhere outside Florida —{" "}
+          We cover 41 Florida colleges right now — and we&apos;re expanding to the rest of the
+          country by demand. If you want a school we don&apos;t have yet,{" "}
           <a className="text-cyan hover:underline" href="mailto:hi@collegemoneyai.com?subject=Add%20a%20school&body=School%20I%20want%20covered%3A%20">
             email me
           </a>{" "}
-          and tell me which one. I add schools as students request them.
+          and tell me which one. Out-of-state requests bump that school higher on the list.
         </p>
 
         <h2 className="text-2xl font-bold text-fg pt-4">Found a scholarship we don&apos;t have?</h2>

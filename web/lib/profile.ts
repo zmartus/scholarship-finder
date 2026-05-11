@@ -83,7 +83,7 @@ export function isProfileUseful(p: Profile | null): boolean {
 
 /** Catalog of attribute checkboxes shown on the profile form. */
 export const ATTRIBUTE_OPTIONS: { value: string; label: string; help?: string }[] = [
-  { value: "florida-resident", label: "Florida resident", help: "Required for many state and UF scholarships" },
+  { value: "florida-resident", label: "Florida resident", help: "Required for state-funded scholarships and many Florida college awards" },
   { value: "first-gen", label: "First-generation college student", help: "Neither parent has a 4-year degree" },
   { value: "pell-eligible", label: "Pell-eligible / financial need", help: "Eligible for federal Pell Grant or free/reduced lunch" },
   { value: "national-merit", label: "National Merit Scholar / Finalist" },

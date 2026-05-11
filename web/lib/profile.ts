@@ -89,7 +89,7 @@ export const ATTRIBUTE_OPTIONS: { value: string; label: string; help?: string }[
   { value: "national-merit", label: "National Merit Scholar / Finalist" },
   { value: "veteran", label: "Veteran or active military" },
   { value: "rotc", label: "ROTC participant" },
-  { value: "honors-program", label: "Plan to apply to UF Honors / similar program" },
+  { value: "honors-program", label: "Plan to apply to honors program", help: "Many schools have a separate honors college or track with its own scholarships" },
   { value: "stem-major", label: "Pursuing STEM major" },
   { value: "first-time-college", label: "First-time-in-college freshman", help: "Not transferring from another school" },
 ];

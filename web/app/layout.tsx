@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Masthead } from "@/components/Masthead";
 import { Footer } from "@/components/Footer";
@@ -35,6 +36,7 @@ export default function RootLayout({
         <Masthead />
         <main className="flex-1 relative z-10">{children}</main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );

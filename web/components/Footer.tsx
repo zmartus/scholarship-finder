@@ -51,8 +51,18 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-border-soft text-center text-xs text-fg-faint font-mono uppercase tracking-[0.18em]">
-          © {new Date().getFullYear()} CollegeMoneyAI · Built for the class of tomorrow · Made in Gainesville, FL
+        <div className="mt-10 pt-6 border-t border-border-soft flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-xs text-fg-faint font-mono uppercase tracking-[0.18em]">
+          <div className="text-center sm:text-left">
+            © {new Date().getFullYear()} CollegeMoneyAI · Made in Gainesville, FL
+          </div>
+          <div className="flex items-center justify-center gap-5">
+            <Link href="/privacy" className="hover:text-cyan transition-colors">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-cyan transition-colors">
+              Terms
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

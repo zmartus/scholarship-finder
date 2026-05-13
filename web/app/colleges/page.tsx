@@ -31,8 +31,8 @@ export default async function CollegesPage({ searchParams }: { searchParams: Sea
         className="mt-10 mx-auto max-w-2xl"
       >
         <label htmlFor="q" className="sr-only">Search colleges</label>
-        <div className="relative card p-2 flex items-center gap-2">
-          <span className="pl-3 text-fg-muted">
+        <div className="relative card p-1.5 flex items-center gap-1">
+          <span className="pl-3 text-fg-muted flex-shrink-0">
             <SearchIcon className="w-5 h-5" />
           </span>
           <input
@@ -40,12 +40,16 @@ export default async function CollegesPage({ searchParams }: { searchParams: Sea
             name="q"
             type="search"
             defaultValue={query}
-            placeholder="Try University of Florida, FSU, UCF…"
-            className="flex-1 bg-transparent px-2 py-3 text-lg text-fg placeholder:text-fg-faint focus:outline-none"
+            placeholder="Try UF, FSU, UCF…"
+            className="flex-1 min-w-0 bg-transparent px-2 py-3 text-lg text-fg placeholder:text-fg-faint focus:outline-none"
             autoFocus
           />
-          <button type="submit" className="btn-gradient text-[14px] py-2.5 px-5">
-            Find
+          <button
+            type="submit"
+            aria-label="Search"
+            className="flex-shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full text-bg bg-gradient-to-br from-cyan via-violet to-pink hover:opacity-90 transition-opacity"
+          >
+            <ArrowIcon />
           </button>
         </div>
       </form>

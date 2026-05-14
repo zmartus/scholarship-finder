@@ -47,43 +47,45 @@ COLLEGE_URLS: dict[str, dict[str, str]] = {
     },
     "university-of-central-florida": {
         "name": "University of Central Florida",
-        "url": "https://finaid.ucf.edu/types-of-aid/scholarships/",
+        # The general /scholarships/ landing page is navigational with no named
+        # awards. The Pegasus program page is where UCF's main merit awards live.
+        "url": "https://www.ucf.edu/financial-aid/types/scholarships/pegasus/",
     },
     "university-of-south-florida": {
         "name": "University of South Florida",
-        "url": "https://www.usf.edu/financial-aid/types-of-aid/scholarships.aspx",
+        "url": "https://www.usf.edu/admissions/freshmen/admissions-scholarships/",
     },
     "florida-international-university": {
         "name": "Florida International University",
-        "url": "https://onestop.fiu.edu/finances/scholarships/",
+        "url": "https://scholarships.fiu.edu/browse-scholarships/merit-scholarships/",
     },
     "florida-atlantic-university": {
         "name": "Florida Atlantic University",
-        "url": "https://www.fau.edu/finaid/scholarships/",
+        "url": "https://www.fau.edu/admissions/freshman/scholarships/",
     },
     "university-of-miami": {
         "name": "University of Miami",
-        "url": "https://admissions.miami.edu/undergraduate/financial-aid/scholarships/",
+        "url": "https://admissions.miami.edu/undergraduate/financial-aid/scholarships/freshman/index.html",
     },
     "stetson-university": {
         "name": "Stetson University",
-        "url": "https://www.stetson.edu/admin/financial-aid/scholarships/",
+        "url": "https://www.stetson.edu/administration/financial-aid/scholarships/",
     },
     "rollins-college": {
         "name": "Rollins College",
-        "url": "https://www.rollins.edu/admission-aid/undergraduate/financial-aid/scholarships/",
+        "url": "https://www.rollins.edu/scholarships-aid/scholarships/",
     },
-    "embry-riddle-aeronautical-university": {
+    "embry-riddle-aeronautical": {
         "name": "Embry-Riddle Aeronautical University",
-        "url": "https://erau.edu/admissions/financial-aid/scholarships",
+        "url": "https://daytonabeach.erau.edu/financial-aid/scholarships",
     },
     "florida-institute-of-technology": {
         "name": "Florida Institute of Technology",
-        "url": "https://www.fit.edu/financial-aid/scholarships-grants/",
+        "url": "https://www.fit.edu/admission/scholarships--aid/university-scholarships-and-grants/",
     },
     "new-college-of-florida": {
         "name": "New College of Florida",
-        "url": "https://www.ncf.edu/admissions/financial-aid/scholarships/",
+        "url": "https://www.ncf.edu/admissions/first-year-students/scholarships/",
     },
 }
 
@@ -230,8 +232,14 @@ def fetch_and_clean(url: str, timeout_ms: int = 30_000) -> str:
     for tag in soup.find_all(list(NOISE_TAGS)):
         tag.decompose()
 
-    # Prefer <main>, fall back to <body>
-    container = soup.find("main") or soup.find("article") or soup.body or soup
+    # Drop common UI-widget wrappers that match real content tags but aren't.
+    # (e.g. Stetson loads a chatbot transcript as the first <article> element.)
+    for tag in soup.find_all(class_=re.compile(r"(?i)chatbot|chat-widget|ocelot|transcript|cookie")):
+        tag.decompose()
+
+    # Container: prefer <main> (semantic), fall back to <body>. Skip <article>
+    # because vendors often wrap widgets in it and pollute extraction.
+    container = soup.find("main") or soup.body or soup
     text_html = str(container)
 
     # Collapse multiple blank lines + strip trailing whitespace
@@ -278,12 +286,38 @@ def call_claude(college_name: str, html_body: str) -> list[ExtractedScholarship]
     raw = re.sub(r"^```(?:json)?\s*", "", raw.strip())
     raw = re.sub(r"\s*```$", "", raw)
 
+    # Be forgiving about what Claude returns. Claude sometimes:
+    #   - Returns the envelope        →  {"scholarships": [...]}  (preferred)
+    #   - Returns the array directly  →  [{...}, {...}, ...]
+    #   - Wraps in prose              →  "Here are the scholarships: {...}"
+    # Find the first JSON delimiter and slice from there.
+    first_brace = raw.find("{")
+    first_bracket = raw.find("[")
+    candidates = [i for i in (first_brace, first_bracket) if i >= 0]
+    if candidates:
+        raw = raw[min(candidates):]
+
     try:
-        parsed: dict[str, Any] = json.loads(raw)
+        parsed = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        print(f"[extract] Claude returned unparseable output:\n{raw[:800]}", file=sys.stderr)
+        raise RuntimeError(f"Extraction JSON parse failure: {exc}") from exc
+
+    # Normalize either the envelope or a bare list into ExtractionEnvelope.
+    if isinstance(parsed, list):
+        parsed = {"scholarships": parsed}
+    elif isinstance(parsed, dict) and "scholarships" not in parsed:
+        # Sometimes Claude returns a dict where each key is a scholarship name.
+        # Treat the dict's values as the list if they all look like scholarships.
+        values = list(parsed.values())
+        if values and all(isinstance(v, dict) and "name" in v for v in values):
+            parsed = {"scholarships": values}
+
+    try:
         envelope = ExtractionEnvelope.model_validate(parsed)
-    except (json.JSONDecodeError, ValidationError) as exc:
-        print(f"[extract] Claude returned unparseable output:\n{raw[:500]}", file=sys.stderr)
-        raise RuntimeError(f"Extraction parse failure: {exc}") from exc
+    except ValidationError as exc:
+        print(f"[extract] Claude output failed validation:\n{json.dumps(parsed, indent=2)[:800]}", file=sys.stderr)
+        raise RuntimeError(f"Extraction validation failure: {exc}") from exc
 
     return envelope.scholarships
 

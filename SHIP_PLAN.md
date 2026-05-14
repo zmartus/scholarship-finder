@@ -6,13 +6,22 @@
 
 ---
 
-## 🚀 RESUME HERE — May 14, 2026
+## 🚀 STATE — May 14, 2026 (post-Tier-1 extraction)
 
-### Where we left off May 13 night
+### All 11 Tier 1 schools are LIVE
 
-✅ **Tier 1 extractor built and working** (`scraper/src/scraper/extract_college.py`)
-✅ **FSU live with 15 real scholarships** — Presidential Scholars, Vires, Sunshine, QUEST, Illuminate, ROTC, Athletic, etc.
-⚠️ **7 of 15 FSU records have stale deadlines** — `2024-12-01` instead of `2026-12-01` (Claude pulled the year as displayed on the page). Hidden in the default "Open" view; visible in "All".
+123 new school-specific scholarships extracted via Claude + Playwright + Pydantic.
+Combined with existing UF (21) + FL state (11) + nationals (10) = ~165 active scholarships in DB.
+
+```
+FSU         15        Miami        7        FIT         14
+UCF         19        Stetson     22        NCF          4
+USF          3        Rollins     14
+FIU          6        ERAU         7
+FAU         12
+```
+
+Cost: ~$3.50 in Anthropic credits. Time: ~75 minutes.
 
 ### Two clean things to do tomorrow
 

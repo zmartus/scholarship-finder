@@ -1,8 +1,97 @@
 # CollegeMoneyAI — Status & Roadmap
 
-**Live at:** https://scholarship-finder-delta.vercel.app/
-**Target launch (custom domain + first users):** June 1, 2026
-**As of:** May 8, 2026
+**Live at:** https://collegemoneyai.com (custom domain live)
+**Target launch (counselor pilot + first paying user):** June 1, 2026
+**As of:** May 14, 2026
+
+---
+
+## 🚀 RESUME HERE — May 14, 2026
+
+### Where we left off May 13 night
+
+✅ **Tier 1 extractor built and working** (`scraper/src/scraper/extract_college.py`)
+✅ **FSU live with 15 real scholarships** — Presidential Scholars, Vires, Sunshine, QUEST, Illuminate, ROTC, Athletic, etc.
+⚠️ **7 of 15 FSU records have stale deadlines** — `2024-12-01` instead of `2026-12-01` (Claude pulled the year as displayed on the page). Hidden in the default "Open" view; visible in "All".
+
+### Two clean things to do tomorrow
+
+**Task A — Fix FSU deadlines (5 min)**
+Single SQL update in Supabase Studio:
+```sql
+UPDATE scholarships
+SET deadline = '2026-12-01'
+WHERE college_id = (SELECT id FROM colleges WHERE slug = 'florida-state-university')
+  AND deadline = '2024-12-01';
+```
+After this, all 15 FSU scholarships show in the default view.
+
+**Task B — Run extractor on remaining 10 Tier 1 schools (~90 min)**
+Each school needs:
+1. Correct URL researched (5 min per school via WebSearch — I do this)
+2. Update `COLLEGE_URLS` in `extract_college.py` if URL differs from current
+3. `./scrape extract --college <slug> --dry-run` to preview
+4. `./scrape extract --college <slug>` to upsert
+5. Verify in Supabase
+
+Schools to run, in suggested order (biggest first):
+- university-of-central-florida (UCF)
+- university-of-south-florida (USF)
+- florida-international-university (FIU)
+- florida-atlantic-university (FAU)
+- university-of-miami (Miami)
+- stetson-university (Stetson)
+- rollins-college (Rollins)
+- embry-riddle-aeronautical-university (Embry-Riddle)
+- florida-institute-of-technology (Florida Tech / FIT)
+- new-college-of-florida (NCF)
+
+Cost: ~$0.30 × 10 = ~$3 in Anthropic credits.
+
+### How to resume the work tomorrow morning
+
+```bash
+# 1. Open terminal
+cd /Users/zacmartus/Documents/code/scholarship-finder
+
+# 2. Pull latest just in case
+git pull
+
+# 3. Switch into the scraper
+cd scraper
+
+# 4. Sanity check — re-run FSU as a dry-run to confirm setup still works
+./scrape extract --college florida-state-university --dry-run | head -30
+
+# Expected: 15 scholarships printed as JSON.
+# If it fails: check that scraper/.env still has ANTHROPIC_API_KEY +
+# SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY.
+
+# 5. Tell me "resume" in chat and I'll lead you through:
+#    - SQL fix for FSU deadlines
+#    - URL research for each remaining school
+#    - Run + verify each one
+```
+
+### After the 10 schools are done
+
+```
+Fri May 15  QA pass on extracted data (~30 min)
+            - Remove state-program duplicates (Benacquisto etc.)
+            - Spot-check 5 random rows per school
+            - Fix any obviously wrong amounts / deadlines
+
+Sat May 16  Autofill MVP build (~3 hr) — the paid feature
+Sun May 17  Polish + demo to sister
+```
+
+### Known issues to address in QA pass
+
+1. Stale deadlines — Claude reads year shown on page, doesn't infer next cycle. Either fix in prompt (preferred) or SQL UPDATE per school.
+2. State-program duplicates — Benacquisto appears in extracted FSU rows but already lives in `florida_state.py`. Tell Claude harder via prompt, or delete duplicates in QA.
+3. Some scholarships return `null` amounts — fine for "varies" but should add tag like `amount-varies` so UI can render gracefully.
+
+---
 
 ---
 

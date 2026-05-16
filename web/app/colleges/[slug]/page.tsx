@@ -94,23 +94,17 @@ export default async function CollegePage({
         }
         return (
           <>
-            {/* THE AI-MATCH SECTION — first thing on the page after the
-                college header. AI-matching badge, action heading,
-                value-prop subtitle. =================================== */}
+            {/* THE AI-MATCH SECTION — first thing after the college header.
+                Badge → heading → subtitle, then curated AI-matched cards. */}
             <section className="mt-14">
               <span className="badge-pill">
                 <SparkleIcon className="w-4 h-4 text-cyan" />
-                AI matching
+                AI matches
               </span>
               <div className="mt-4 flex flex-wrap items-baseline justify-between gap-4">
-                <div className="flex items-baseline gap-3">
-                  <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight">
-                    Apply for these
-                  </h2>
-                  <span className="text-lg text-fg-muted font-mono">
-                    {actionable.length}
-                  </span>
-                </div>
+                <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight">
+                  Apply for these
+                </h2>
                 <div className="flex items-center gap-2 text-sm">
                   <FilterTab
                     href={`/colleges/${slug}?filter=upcoming`}
@@ -127,8 +121,8 @@ export default async function CollegePage({
                 </div>
               </div>
               <p className="mt-2 text-fg-muted">
-                You might miss them without us — scholarships requiring a separate
-                application, AI-ranked for your profile.
+                You might have missed these without us — scholarships requiring a
+                separate application, ranked for your profile.
               </p>
               {actionable.length === 0 ? (
                 <div className="mt-5 card text-center py-10 px-6">

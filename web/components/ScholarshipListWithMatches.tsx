@@ -127,20 +127,28 @@ export function ScholarshipListWithMatches({
     return m;
   }, [matches]);
 
-  // Sort: matched scholarships first (by score), then unmatched (preserve original order).
-  const sorted = useMemo(() => {
-    const indexed = scholarships.map((s, i) => ({ s, i }));
-    return indexed
-      .sort((a, b) => {
-        const ma = matchMap[a.s.id]?.score ?? -1;
-        const mb = matchMap[b.s.id]?.score ?? -1;
-        if (mb !== ma) return mb - ma;
-        return a.i - b.i;
-      })
-      .map((x) => x.s);
-  }, [scholarships, matchMap]);
-
   const hasProfile = hydrated && profile && isProfileUseful(profile);
+
+  // What to render:
+  //   With a profile  → ONLY scholarships the AI matched, sorted by score.
+  //                     This is the "AI matches" curated list the user
+  //                     explicitly asked for. Unmatched scholarships are
+  //                     hidden — trust the AI's filter.
+  //   No profile      → All actionable scholarships in default order
+  //                     so the page isn't empty and the build-profile CTA
+  //                     can pitch the AI feature.
+  //   Profile + AI failed → fall back to all so the user still sees the catalog.
+  const visibleScholarships = useMemo(() => {
+    if (!hasProfile) return scholarships;
+    if (matches.length === 0 && !loading && error) return scholarships; // fallback
+    if (matches.length === 0) return []; // still loading or no matches yet
+    return scholarships
+      .filter((s) => matchMap[s.id] != null)
+      .sort(
+        (a, b) =>
+          (matchMap[b.id]?.score ?? 0) - (matchMap[a.id]?.score ?? 0),
+      );
+  }, [hasProfile, scholarships, matchMap, matches.length, loading, error]);
 
   return (
     <>
@@ -160,28 +168,44 @@ export function ScholarshipListWithMatches({
         </div>
       )}
 
-      {/* Loading hint while AI streams in matches (cards already visible) */}
+      {/* Loading hint while AI streams in matches */}
       {hasProfile && loading && matches.length === 0 && (
         <p className="mt-3 text-sm text-fg-muted">
           <span className="inline-block w-2 h-2 bg-cyan rounded-full animate-pulse mr-2" />
-          AI is ranking your top matches...
+          AI is finding scholarships that fit your profile...
         </p>
       )}
 
-      {/* Soft error if matching failed — cards still render below */}
+      {/* Soft error if matching failed — fall back to showing all */}
       {error && (
         <p className="mt-3 text-sm text-fg-muted">
-          AI matching unavailable right now ({error}). Showing scholarships in default order.
+          AI matching unavailable right now ({error}). Showing all scholarships below.
         </p>
       )}
 
+      {/* The curated list (or full list when no profile) */}
       <ul className="mt-5 grid sm:grid-cols-2 gap-5">
-        {sorted.map((s) => (
+        {visibleScholarships.map((s) => (
           <li key={s.id}>
             <ScholarshipCard s={s} match={matchMap[s.id]} />
           </li>
         ))}
+        {/* Loading skeletons when streaming and curated list is still empty */}
+        {hasProfile && loading && matches.length === 0 &&
+          Array.from({ length: 4 }).map((_, i) => (
+            <li key={`skel-${i}`}>
+              <SkeletonCard />
+            </li>
+          ))}
       </ul>
+
+      {/* Empty state when AI ran but matched nothing */}
+      {hasProfile && !loading && matches.length === 0 && !error && (
+        <p className="mt-6 text-sm text-fg-muted">
+          The AI didn&apos;t find any strong matches for your profile at this school —
+          try updating your interests or activities on your profile to widen the search.
+        </p>
+      )}
     </>
   );
 }
@@ -193,4 +217,18 @@ function safeErrorMessage(text: string): string | null {
   } catch {
     return null;
   }
+}
+
+function SkeletonCard() {
+  return (
+    <div className="match-card p-6 sm:p-7 animate-pulse">
+      <div className="flex items-baseline justify-between gap-3">
+        <div className="h-6 w-24 bg-bg-elev rounded-full" />
+        <div className="h-3 w-16 bg-bg-elev rounded" />
+      </div>
+      <div className="mt-4 h-9 w-32 bg-bg-elev rounded" />
+      <div className="mt-3 h-6 w-3/4 bg-bg-elev rounded" />
+      <div className="mt-4 h-20 w-full bg-bg-elev rounded-xl" />
+    </div>
+  );
 }

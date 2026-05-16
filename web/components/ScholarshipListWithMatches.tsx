@@ -40,7 +40,9 @@ export function ScholarshipListWithMatches({
   useEffect(() => {
     if (!hydrated || !profile || !isProfileUseful(profile)) return;
 
-    const cacheKey = `match:${collegeSlug}:${profileHash(profile)}`;
+    // v2: bumped after we filtered auto-considered scholarships out of
+    // the candidate pool server-side — invalidates any older client caches.
+    const cacheKey = `match:v2:${collegeSlug}:${profileHash(profile)}`;
     const cached = window.sessionStorage.getItem(cacheKey);
     if (cached) {
       try {

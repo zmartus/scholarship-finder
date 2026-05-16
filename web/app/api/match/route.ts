@@ -10,6 +10,7 @@ import {
 import { preFilterScholarships } from "@/lib/match-prefilter";
 import { ProfileSchema } from "@/lib/profile";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { isAutoConsidered } from "@/lib/db/queries";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -82,8 +83,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ matches: [] });
   }
 
+  // Strip auto-considered scholarships before ranking — students are
+  // already in line for those automatically. The AI's effort and budget
+  // should go to recommending scholarships that actually need action.
+  const requiresApplication = scholarships.filter((s) => !isAutoConsidered(s));
+  if (requiresApplication.length === 0) {
+    return NextResponse.json({ matches: [] });
+  }
+
   // Tag-based pre-filter: top ~18 candidates by deterministic relevance.
-  const candidates = preFilterScholarships(scholarships, profile, 18);
+  const candidates = preFilterScholarships(requiresApplication, profile, 18);
   if (candidates.length === 0) {
     return NextResponse.json({ matches: [] });
   }

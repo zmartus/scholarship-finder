@@ -40,9 +40,10 @@ export function ScholarshipListWithMatches({
   useEffect(() => {
     if (!hydrated || !profile || !isProfileUseful(profile)) return;
 
-    // v2: bumped after we filtered auto-considered scholarships out of
-    // the candidate pool server-side — invalidates any older client caches.
-    const cacheKey = `match:v2:${collegeSlug}:${profileHash(profile)}`;
+    // v3: bumped after we tagged FSU Presidential as auto-considered +
+    // tightened the visible list to AI-matched only. Invalidates v2 caches
+    // so users see a fresh, properly-filtered match list.
+    const cacheKey = `match:v3:${collegeSlug}:${profileHash(profile)}`;
     const cached = window.sessionStorage.getItem(cacheKey);
     if (cached) {
       try {

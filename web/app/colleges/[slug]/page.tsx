@@ -95,17 +95,23 @@ export default async function CollegePage({
         return (
           <>
             {/* THE AI-MATCH SECTION — first thing after the college header.
-                Badge → heading → subtitle, then curated AI-matched cards. */}
+                Hierarchy: 'AI matches' (H2) → 'Apply to these' (lead) →
+                tagline. Then the curated, AI-ranked cards. ============== */}
             <section className="mt-14">
-              <span className="badge-pill">
-                <SparkleIcon className="w-4 h-4 text-cyan" />
-                AI matches
-              </span>
-              <div className="mt-4 flex flex-wrap items-baseline justify-between gap-4">
-                <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight">
-                  Apply for these
-                </h2>
-                <div className="flex items-center gap-2 text-sm">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <h2 className="font-extrabold text-4xl sm:text-5xl tracking-tight gradient-text inline-block">
+                    AI matches
+                  </h2>
+                  <p className="mt-3 text-2xl sm:text-3xl font-bold tracking-tight text-fg">
+                    Apply to these
+                  </p>
+                  <p className="mt-2 text-fg-muted">
+                    You might have missed them without us — scholarships
+                    requiring a separate application, ranked for your profile.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-sm shrink-0">
                   <FilterTab
                     href={`/colleges/${slug}?filter=upcoming`}
                     active={filter !== "all"}
@@ -120,10 +126,6 @@ export default async function CollegePage({
                   </FilterTab>
                 </div>
               </div>
-              <p className="mt-2 text-fg-muted">
-                You might have missed these without us — scholarships requiring a
-                separate application, ranked for your profile.
-              </p>
               {actionable.length === 0 ? (
                 <div className="mt-5 card text-center py-10 px-6">
                   <p className="text-fg-soft">

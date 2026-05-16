@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { isAutoConsidered, type Scholarship } from "@/lib/db/queries";
+import type { Scholarship } from "@/lib/db/queries";
+import { isAutoConsidered } from "@/lib/scholarship-utils";
 import { formatAmount, formatDeadline, daysUntil, scopeLabel } from "@/lib/format";
 
 export type ScholarshipMatch = { score: number; reason: string };

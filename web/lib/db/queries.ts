@@ -1,22 +1,9 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-/**
- * Tags that indicate a scholarship is awarded automatically when the
- * student submits the freshman admissions application — no separate form,
- * no separate effort. We surface these as a secondary "you're considered
- * automatically when admitted" section rather than mixing them with
- * scholarships that genuinely require a separate application.
- */
-const AUTO_CONSIDERED_TAGS = new Set([
-  "auto-consideration",
-  "automatic",
-  "admissions-based",
-]);
-
-/** True when a scholarship is awarded automatically (no separate application). */
-export function isAutoConsidered(s: { tags: string[] | null }): boolean {
-  return (s.tags ?? []).some((t) => AUTO_CONSIDERED_TAGS.has(t));
-}
+// Re-export the pure helper so existing server-side imports still work.
+// Client components must import from "@/lib/scholarship-utils" directly to
+// avoid pulling next/headers into the client bundle (which breaks the build).
+export { isAutoConsidered } from "@/lib/scholarship-utils";
 
 export type College = {
   id: string;

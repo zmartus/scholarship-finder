@@ -95,12 +95,17 @@ export default async function CollegePage({
         return (
           <>
             {/* THE AI-MATCH SECTION — first thing on the page after the
-                college header. Heading leans on the value prop. =========== */}
+                college header. AI-matching badge, action heading,
+                value-prop subtitle. =================================== */}
             <section className="mt-14">
-              <div className="flex flex-wrap items-baseline justify-between gap-4">
+              <span className="badge-pill">
+                <SparkleIcon className="w-4 h-4 text-cyan" />
+                AI matching
+              </span>
+              <div className="mt-4 flex flex-wrap items-baseline justify-between gap-4">
                 <div className="flex items-baseline gap-3">
                   <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight">
-                    You might miss these without us
+                    Apply for these
                   </h2>
                   <span className="text-lg text-fg-muted font-mono">
                     {actionable.length}
@@ -122,8 +127,8 @@ export default async function CollegePage({
                 </div>
               </div>
               <p className="mt-2 text-fg-muted">
-                AI-ranked scholarships requiring a separate application — your top picks
-                appear first with a one-line reason each.
+                You might miss them without us — scholarships requiring a separate
+                application, AI-ranked for your profile.
               </p>
               {actionable.length === 0 ? (
                 <div className="mt-5 card text-center py-10 px-6">
@@ -147,7 +152,7 @@ export default async function CollegePage({
               <section className="mt-16">
                 <div className="flex items-baseline gap-3">
                   <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight text-fg-soft">
-                    These are auto-applied
+                    These are auto-applied when you apply
                   </h2>
                   <span className="text-lg text-fg-muted font-mono">{auto.length}</span>
                 </div>
@@ -313,6 +318,25 @@ function ExternalArrow() {
   return (
     <svg viewBox="0 0 16 16" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
       <path d="M5 11l6-6M6 4h5v5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function SparkleIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      aria-hidden
+    >
+      <path
+        d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"
+        strokeLinecap="round"
+      />
+      <circle cx="12" cy="12" r="2" fill="currentColor" />
     </svg>
   );
 }

@@ -132,12 +132,11 @@ export default async function ScholarshipPage({ params }: { params: Params }) {
           rel="noreferrer noopener"
           className="btn-gradient w-full sm:w-auto justify-center text-base"
         >
-          Apply on the official site
+          {ctaLabel(s.scope)}
           <ExternalArrow />
         </a>
         <p className="mt-3 text-sm text-fg-muted">
-          We don't process applications — clicking "Apply" sends you to the school's
-          official scholarship page.
+          {ctaHelper(s.scope)}
         </p>
       </section>
 
@@ -197,4 +196,35 @@ function ExternalArrow() {
       <path d="M5 11l6-6M6 4h5v5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
+}
+
+// CTA copy reflects what students actually do at the destination —
+// the "apply" verb is misleading for school awards that are auto-
+// considered via admissions, and for state aid that goes through FFAA/FAFSA.
+function ctaLabel(scope: string): string {
+  switch (scope) {
+    case "school":
+      return "View on the official scholarship page";
+    case "state":
+      return "View the official application process";
+    case "national":
+    case "local":
+    default:
+      return "Apply on the official site";
+  }
+}
+
+function ctaHelper(scope: string): string {
+  switch (scope) {
+    case "school":
+      return "Most school-specific scholarships are considered automatically when you submit your admissions application. Check the page for any required supplements or honors-program applications.";
+    case "state":
+      return "Florida state aid is typically applied for via the Florida Financial Aid Application (FFAA) and/or FAFSA. The page explains the full process and deadlines.";
+    case "national":
+      return "We don't process applications. The button opens the foundation's official site in a new tab where you'll start (or continue) the application.";
+    case "local":
+      return "Local awards usually have their own application. The button opens the official site in a new tab.";
+    default:
+      return "We don't process applications — the button opens the official site in a new tab.";
+  }
 }

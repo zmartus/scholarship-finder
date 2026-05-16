@@ -62,7 +62,7 @@ def _items() -> list[ScholarshipItem]:
         {
             "external_id": "nat-burger-king-scholars",
             "name": "Burger King Scholars Program",
-            "source_url": "https://burgerkingfoundation.org/programs/burger-king-sm-scholars",
+            "source_url": "https://burgerking.scholarsapply.org",
             "amount_min": 1000, "amount_max": 50000,
             "deadline": None,  # Verified 2026-05-08: 2026-2027 cycle was Oct 15, 2025 - Dec 15, 2025 (closed). Next cycle (2027-2028) opens Oct 15, 2026.
             "description": "Awards range from $1,000 (Burger King Scholars) up to $50,000 (King's Hawaiian Scholars and Webber Family Scholarship). Open to U.S./Canada/Puerto Rico high school seniors. Next application cycle opens October 15, 2026 and closes December 15, 2026 (or earlier if 30,000 applications received).",
@@ -82,7 +82,7 @@ def _items() -> list[ScholarshipItem]:
         {
             "external_id": "nat-questbridge-college-match",
             "name": "QuestBridge National College Match",
-            "source_url": "https://www.questbridge.org/high-school-students/national-college-match",
+            "source_url": "https://apply.questbridge.org/portal/apply",
             "amount_min": None, "amount_max": None,
             "deadline": date(2026, 9, 30),  # Verified 2026-05-08: deadline is Sept 30 at 11:59pm Pacific (annual)
             "description": "Matches high-achieving low-income students with full four-year scholarships to 50+ partner colleges including Stanford, Yale, MIT, Princeton, Amherst, and others. Effectively a full ride at top schools. Application deadline is September 30 at 11:59pm Pacific Time.",
@@ -92,7 +92,7 @@ def _items() -> list[ScholarshipItem]:
         {
             "external_id": "nat-discover-tribute",
             "name": "Discover Student Loans Tribute Award",
-            "source_url": "https://www.discover.com/student-loans/scholarship/",
+            "source_url": "https://www.discover.com/credit-cards/student-credit-card/scholarship/",
             "amount_min": 2500, "amount_max": 10000,
             "deadline": date(2027, 1, 18),  # Forecast based on annual pattern (typically mid-January). Verify on source.
             "description": "Awards for high school sophomores and juniors. 750 awards of $2,500–$10,000 distributed annually based on community service and achievements. Application typically due in mid-January — verify current cycle on the official site.",
@@ -112,7 +112,7 @@ def _items() -> list[ScholarshipItem]:
         {
             "external_id": "nat-dell-scholars",
             "name": "Dell Scholars Program",
-            "source_url": "https://www.dellscholars.org/",
+            "source_url": "https://apply.dellscholars.org/",
             "amount_min": 20000, "amount_max": 20000,
             "deadline": date(2026, 12, 1),  # Forecast based on annual pattern (typically early December). Verify on source.
             "description": "$20,000 scholarship plus laptop and ongoing support resources. Targets students who have overcome significant obstacles to pursue higher education. Application typically due in early December — verify current cycle on the official site.",
@@ -144,7 +144,7 @@ def _items() -> list[ScholarshipItem]:
 
 class Nationals(Source):
     name = "nationals"
-    base_url = "https://www.collegemoneyai.com"
+    base_url = "https://www.grantaria.com"
 
     def fetch(self, client: httpx.Client) -> Iterable[ScholarshipItem]:
         yield from _items()

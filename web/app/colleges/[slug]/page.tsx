@@ -94,12 +94,13 @@ export default async function CollegePage({
         }
         return (
           <>
-            {/* APPLY FOR THESE — the actionable ones (primary H2) ======= */}
+            {/* THE AI-MATCH SECTION — first thing on the page after the
+                college header. Heading leans on the value prop. =========== */}
             <section className="mt-14">
               <div className="flex flex-wrap items-baseline justify-between gap-4">
                 <div className="flex items-baseline gap-3">
                   <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight">
-                    Apply for these
+                    You might miss these without us
                   </h2>
                   <span className="text-lg text-fg-muted font-mono">
                     {actionable.length}
@@ -121,7 +122,8 @@ export default async function CollegePage({
                 </div>
               </div>
               <p className="mt-2 text-fg-muted">
-                Scholarships requiring a separate application — easy to miss without us.
+                AI-ranked scholarships requiring a separate application — your top picks
+                appear first with a one-line reason each.
               </p>
               {actionable.length === 0 ? (
                 <div className="mt-5 card text-center py-10 px-6">
@@ -145,12 +147,12 @@ export default async function CollegePage({
               <section className="mt-16">
                 <div className="flex items-baseline gap-3">
                   <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight text-fg-soft">
-                    Auto-considered when you apply
+                    These are auto-applied
                   </h2>
                   <span className="text-lg text-fg-muted font-mono">{auto.length}</span>
                 </div>
                 <p className="mt-2 text-fg-muted">
-                  No separate form — you&apos;re automatically considered when you submit the
+                  No separate form — you&apos;re automatically considered when you submit your
                   admissions application. Listed here so you know what you&apos;re in line for.
                 </p>
                 <ul className="mt-5 grid sm:grid-cols-2 gap-5">

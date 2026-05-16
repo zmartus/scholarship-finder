@@ -144,16 +144,16 @@ export function ScholarshipListWithMatches({
     <>
       {/* Profile-CTA banner (shown only when no useful profile exists) */}
       {hydrated && !hasProfile && (
-        <div className="mt-5 mb-2 rounded-2xl border border-border-soft bg-bg-elev/50 px-5 py-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-5 mb-2 rounded-2xl border border-cyan/30 bg-cyan/[0.04] px-5 py-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-fg-soft">
-            <span className="text-cyan font-semibold">Tip:</span> build your profile to see
-            an AI &ldquo;why you fit&rdquo; reason on each match.
+            <span className="text-cyan font-semibold">Build your profile</span> to see
+            which of these fit you best — AI ranks them and explains why in one line.
           </p>
           <Link
             href={`/profile?next=/colleges/${collegeSlug}&for=${encodeURIComponent(collegeName)}`}
-            className="text-sm text-cyan hover:underline whitespace-nowrap"
+            className="text-sm text-cyan font-semibold hover:underline whitespace-nowrap"
           >
-            Build profile →
+            Get my matches →
           </Link>
         </div>
       )}

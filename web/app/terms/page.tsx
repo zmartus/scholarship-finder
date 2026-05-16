@@ -39,8 +39,8 @@ export default function TermsPage() {
 
         <h2 className="text-2xl font-bold text-fg pt-4">By using the site, you agree to these terms</h2>
         <p>
-          Visiting <strong className="text-fg">grantaria.com</strong> means you&apos;ve
-          read and accepted what&apos;s on this page. If you don&apos;t agree, don&apos;t use
+          Visiting <strong className="text-fg">grantaria.com</strong>{" "}
+          means you&apos;ve read and accepted what&apos;s on this page. If you don&apos;t agree, don&apos;t use
           the site.
         </p>
 

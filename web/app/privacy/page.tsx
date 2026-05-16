@@ -109,8 +109,8 @@ export default function PrivacyPage() {
 
         <h2 className="text-2xl font-bold text-fg pt-4">Deleting your data</h2>
         <p>
-          <strong className="text-fg">Your profile:</strong> clear your browser&apos;s
-          localStorage for grantaria.com, or use your browser&apos;s &ldquo;clear site
+          <strong className="text-fg">Your profile:</strong>{" "}
+          clear your browser&apos;s localStorage for grantaria.com, or use your browser&apos;s &ldquo;clear site
           data&rdquo; option. Done — it&apos;s gone, we never had a copy.
         </p>
         <p>

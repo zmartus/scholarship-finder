@@ -24,8 +24,21 @@ from scraper.models import ScholarshipItem
 from scraper.sources.base import Source
 
 
-# --- Source URL ------------------------------------------------------------
+# --- Source URLs -----------------------------------------------------------
+# PAGE_URL is the SFA scholarships landing page — kept for endowed/named
+# awards that ONLY live on that page (no separate apply form).
 PAGE_URL = "https://www.sfa.ufl.edu/types-of-aid/scholarships/"
+
+# Most UF freshman scholarships are auto-considered when you submit the
+# admissions application. For those, link directly to the apply portal so
+# students don't have to hunt for the right scholarship on a long page.
+APPLY_URL = "https://admissions.ufl.edu/apply"
+
+# Stamps Scholars Program is admin'd via the Honors Program (Early Action).
+STAMPS_URL = "https://www.stampsscholars.org/applying/scholarship-programs/university-of-florida"
+
+# Grandparent Waiver has its own residency-office process.
+RESIDENCY_WAIVER_URL = "https://admissions.ufl.edu/cost-and-aid/residency#fee-waiver"
 
 # All UF freshman merit awards share the Nov 1 priority deadline for the
 # upcoming fall admission cycle. Currently: applying Nov 2026 -> Fall 2027.
@@ -41,6 +54,7 @@ def _items() -> list[ScholarshipItem]:
         # === Florida resident merit (auto-considered) =====================
         {
             "external_id": "uf-florida-merit-1k",
+            "source_url": APPLY_URL,
             "name": "Florida Merit Scholarship — $1,000/year",
             "amount_min": 4000, "amount_max": 4000,
             "deadline": NEXT_NOV_1,
@@ -51,6 +65,7 @@ def _items() -> list[ScholarshipItem]:
         },
         {
             "external_id": "uf-florida-merit-2k",
+            "source_url": APPLY_URL,
             "name": "Florida Merit Scholarship — $2,000/year",
             "amount_min": 8000, "amount_max": 8000,
             "deadline": NEXT_NOV_1,
@@ -61,6 +76,7 @@ def _items() -> list[ScholarshipItem]:
         },
         {
             "external_id": "uf-presidential",
+            "source_url": APPLY_URL,
             "name": "UF Presidential Scholarship",
             "amount_min": 20000, "amount_max": 20000,
             "deadline": NEXT_NOV_1,
@@ -71,6 +87,7 @@ def _items() -> list[ScholarshipItem]:
         },
         {
             "external_id": "uf-presidential-gold",
+            "source_url": APPLY_URL,
             "name": "UF Presidential Gold Scholarship",
             "amount_min": 32000, "amount_max": 32000,
             "deadline": NEXT_NOV_1,
@@ -81,6 +98,7 @@ def _items() -> list[ScholarshipItem]:
         },
         {
             "external_id": "uf-presidential-platinum",
+            "source_url": APPLY_URL,
             "name": "UF Presidential Platinum Scholarship",
             "amount_min": 40000, "amount_max": 40000,
             "deadline": NEXT_NOV_1,
@@ -93,6 +111,7 @@ def _items() -> list[ScholarshipItem]:
         # === Out-of-state tuition scholarships ============================
         {
             "external_id": "uf-alumni-tuition",
+            "source_url": APPLY_URL,
             "name": "Alumni Tuition Scholarship",
             "amount_min": 40000, "amount_max": 40000,
             "deadline": NEXT_NOV_1,
@@ -103,6 +122,7 @@ def _items() -> list[ScholarshipItem]:
         },
         {
             "external_id": "uf-sunshine-tuition",
+            "source_url": APPLY_URL,
             "name": "Sunshine Tuition Scholarship",
             "amount_min": 64000, "amount_max": 64000,
             "deadline": NEXT_NOV_1,
@@ -113,6 +133,7 @@ def _items() -> list[ScholarshipItem]:
         },
         {
             "external_id": "uf-gator-nation-tuition",
+            "source_url": APPLY_URL,
             "name": "Gator Nation Tuition Scholarship",
             "amount_min": 80000, "amount_max": 80000,
             "deadline": NEXT_NOV_1,
@@ -123,6 +144,7 @@ def _items() -> list[ScholarshipItem]:
         },
         {
             "external_id": "uf-distinguished-scholar-8k",
+            "source_url": APPLY_URL,
             "name": "UF Distinguished Scholar Tuition Scholarship — $8,000",
             "amount_min": 32000, "amount_max": 32000,
             "deadline": NEXT_NOV_1,
@@ -133,6 +155,7 @@ def _items() -> list[ScholarshipItem]:
         },
         {
             "external_id": "uf-distinguished-scholar-6k",
+            "source_url": APPLY_URL,
             "name": "UF Distinguished Scholar Tuition Scholarship — $6,000",
             "amount_min": 24000, "amount_max": 24000,
             "deadline": NEXT_NOV_1,
@@ -143,6 +166,7 @@ def _items() -> list[ScholarshipItem]:
         },
         {
             "external_id": "uf-distinguished-scholar-4k",
+            "source_url": APPLY_URL,
             "name": "UF Distinguished Scholar Tuition Scholarship — $4,000",
             "amount_min": 16000, "amount_max": 16000,
             "deadline": NEXT_NOV_1,
@@ -155,6 +179,7 @@ def _items() -> list[ScholarshipItem]:
         # === Need-based and special programs ==============================
         {
             "external_id": "uf-machen-florida-opportunity",
+            "source_url": APPLY_URL,
             "name": "Machen Florida Opportunity Scholarship (MFOS)",
             "amount_min": None, "amount_max": None,
             "deadline": None,
@@ -165,6 +190,7 @@ def _items() -> list[ScholarshipItem]:
         },
         {
             "external_id": "uf-stamps-scholars",
+            "source_url": STAMPS_URL,
             "name": "Stamps Scholars Program",
             "amount_min": 24000, "amount_max": 24000,
             "deadline": None,
@@ -176,6 +202,7 @@ def _items() -> list[ScholarshipItem]:
         # Benacquisto moved to florida_state source (it's portable to any FL public school).
         {
             "external_id": "uf-grandparent-waiver",
+            "source_url": RESIDENCY_WAIVER_URL,
             "name": "Grandparent Waiver of Out-of-State Tuition and Fees",
             "amount_min": None, "amount_max": None,
             "deadline": None,
@@ -267,7 +294,7 @@ def _items() -> list[ScholarshipItem]:
             ScholarshipItem(
                 external_id=r["external_id"],
                 source="uf_sfa",
-                source_url=PAGE_URL,
+                source_url=r.get("source_url", PAGE_URL),
                 name=r["name"],
                 description=r.get("description"),
                 amount_min=r.get("amount_min"),

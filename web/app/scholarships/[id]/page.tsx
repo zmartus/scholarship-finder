@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getScholarshipById } from "@/lib/db/queries";
+import { getScholarshipById, isAutoConsidered } from "@/lib/db/queries";
 import {
   formatAmount,
   formatDeadline,
@@ -132,11 +132,11 @@ export default async function ScholarshipPage({ params }: { params: Params }) {
           rel="noreferrer noopener"
           className="btn-gradient w-full sm:w-auto justify-center text-base"
         >
-          {ctaLabel(s.scope)}
+          {ctaLabel(s.scope, isAutoConsidered(s))}
           <ExternalArrow />
         </a>
         <p className="mt-3 text-sm text-fg-muted">
-          {ctaHelper(s.scope)}
+          {ctaHelper(s.scope, isAutoConsidered(s))}
         </p>
       </section>
 
@@ -201,7 +201,8 @@ function ExternalArrow() {
 // CTA copy reflects what students actually do at the destination —
 // the "apply" verb is misleading for school awards that are auto-
 // considered via admissions, and for state aid that goes through FFAA/FAFSA.
-function ctaLabel(scope: string): string {
+function ctaLabel(scope: string, auto: boolean): string {
+  if (auto) return "Start the admissions application";
   switch (scope) {
     case "school":
       return "View on the official scholarship page";
@@ -214,7 +215,10 @@ function ctaLabel(scope: string): string {
   }
 }
 
-function ctaHelper(scope: string): string {
+function ctaHelper(scope: string, auto: boolean): string {
+  if (auto) {
+    return "There's no separate application — you're automatically considered for this award when you submit the freshman admissions application by the priority deadline. Make sure your test scores and transcripts are in.";
+  }
   switch (scope) {
     case "school":
       return "Most school-specific scholarships are considered automatically when you submit your admissions application. Check the page for any required supplements or honors-program applications.";

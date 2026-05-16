@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   getCollegeBySlug,
+  isAutoConsidered,
   listScholarshipsForCollege,
   type Scholarship,
 } from "@/lib/db/queries";
@@ -118,20 +119,78 @@ export default async function CollegePage({
         </div>
       </section>
 
-      {/* List =========================================================== */}
-      <section className="mt-8">
-        {visible.length === 0 ? (
-          <EmptyState collegeName={college.name} hasAny={all.length > 0} />
-        ) : (
-          <ul className="grid sm:grid-cols-2 gap-5">
-            {visible.map((s) => (
-              <li key={s.id}>
-                <ScholarshipCard s={s} />
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      {/* Two-section list ============================================== */}
+      {(() => {
+        const actionable = visible.filter((s) => !isAutoConsidered(s));
+        const auto = visible.filter((s) => isAutoConsidered(s));
+        if (visible.length === 0) {
+          return (
+            <section className="mt-8">
+              <EmptyState collegeName={college.name} hasAny={all.length > 0} />
+            </section>
+          );
+        }
+        return (
+          <>
+            {/* APPLY FOR THESE — the actionable ones ================= */}
+            <section className="mt-8">
+              <div className="flex items-baseline gap-3">
+                <h3 className="text-xl font-bold tracking-tight">
+                  Apply for these
+                </h3>
+                <span className="text-sm text-fg-muted font-mono">
+                  {actionable.length}
+                </span>
+              </div>
+              <p className="mt-1 text-sm text-fg-muted">
+                Scholarships requiring a separate application — easy to miss without us.
+              </p>
+              <ul className="mt-5 grid sm:grid-cols-2 gap-5">
+                {actionable.length === 0 ? (
+                  <li className="sm:col-span-2">
+                    <div className="card text-center py-10 px-6">
+                      <p className="text-fg-soft">
+                        We&apos;re still curating the application-required scholarships for{" "}
+                        {college.name}. The auto-considered awards below show what you&apos;ll
+                        be in line for if admitted.
+                      </p>
+                    </div>
+                  </li>
+                ) : (
+                  actionable.map((s) => (
+                    <li key={s.id}>
+                      <ScholarshipCard s={s} />
+                    </li>
+                  ))
+                )}
+              </ul>
+            </section>
+
+            {/* AUTO-CONSIDERED — secondary section ==================== */}
+            {auto.length > 0 && (
+              <section className="mt-14">
+                <div className="flex items-baseline gap-3">
+                  <h3 className="text-xl font-bold tracking-tight text-fg-soft">
+                    Auto-considered when you apply
+                  </h3>
+                  <span className="text-sm text-fg-muted font-mono">{auto.length}</span>
+                </div>
+                <p className="mt-1 text-sm text-fg-muted">
+                  No separate form — you&apos;re automatically considered when you submit the
+                  admissions application. Listed here so you know what you&apos;re in line for.
+                </p>
+                <ul className="mt-5 grid sm:grid-cols-2 gap-5">
+                  {auto.map((s) => (
+                    <li key={s.id}>
+                      <ScholarshipCard s={s} />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </>
+        );
+      })()}
 
       {/* Source attribution / freshness ================================ */}
       {all.length > 0 && (

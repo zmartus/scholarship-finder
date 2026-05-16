@@ -1,19 +1,26 @@
 import Link from "next/link";
-import type { Scholarship } from "@/lib/db/queries";
+import { isAutoConsidered, type Scholarship } from "@/lib/db/queries";
 import { formatAmount, formatDeadline, daysUntil, scopeLabel } from "@/lib/format";
 
 export function ScholarshipCard({ s }: { s: Scholarship }) {
   const days = daysUntil(s.deadline);
   const urgent = days != null && days >= 0 && days <= 30;
   const past = days != null && days < 0;
+  const auto = isAutoConsidered(s);
 
   return (
     <Link
       href={`/scholarships/${s.id}`}
-      className="match-card block p-6 sm:p-7 hover:border-border-strong transition-colors group"
+      className={`match-card block p-6 sm:p-7 hover:border-border-strong transition-colors group ${
+        auto ? "opacity-90" : ""
+      }`}
     >
       <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <DeadlinePill iso={s.deadline} days={days} urgent={urgent} past={past} />
+        {auto ? (
+          <AutoConsideredPill />
+        ) : (
+          <DeadlinePill iso={s.deadline} days={days} urgent={urgent} past={past} />
+        )}
         <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-fg-muted">
           {scopeLabel(s.scope)}
         </span>
@@ -56,10 +63,27 @@ export function ScholarshipCard({ s }: { s: Scholarship }) {
           )}
         </div>
         <span className="text-sm text-fg-soft group-hover:text-cyan transition-colors inline-flex items-center gap-2 whitespace-nowrap">
-          View details <ArrowIcon />
+          {auto ? "How you qualify" : "View details"} <ArrowIcon />
         </span>
       </div>
     </Link>
+  );
+}
+
+function AutoConsideredPill() {
+  return (
+    <span className="inline-flex items-center gap-2 text-[12px] font-mono uppercase tracking-[0.18em] text-fg-soft border border-border bg-bg-elev/40 rounded-full px-3 py-1">
+      <CheckIcon className="w-3 h-3 text-check" />
+      Auto-considered
+    </span>
+  );
+}
+
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
+      <path d="M3 8.5L7 12l6-7" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 

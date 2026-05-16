@@ -79,63 +79,48 @@ export default async function CollegePage({
         )}
       </header>
 
-      {/* Stat strip ===================================================== */}
-      <section className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-px bg-border rounded-2xl border border-border overflow-hidden">
-        <StatCell label="Scholarships indexed" value={stats.count.toString()} />
-        <StatCell
-          label="Total potential"
-          value={stats.totalMax > 0 ? formatAmount(null, stats.totalMax) : "—"}
-        />
-        <StatCell
-          label="Average award"
-          value={stats.avg > 0 ? formatAmount(null, stats.avg) : "—"}
-        />
-        <StatCell
-          label="Next deadline"
-          value={stats.nextDeadlineLabel}
-          accent={stats.nextDeadlineDays != null && stats.nextDeadlineDays <= 30}
-        />
-      </section>
-
-      {/* Filter row ===================================================== */}
-      <section className="mt-14 flex flex-wrap items-baseline justify-between gap-4">
-        <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight">
-          {filter === "all" ? "All scholarships" : "Open right now"}
-        </h2>
-        <div className="flex items-center gap-2 text-sm">
-          <FilterTab href={`/colleges/${slug}?filter=upcoming`} active={filter !== "all"}>
-            Open ({stats.openCount})
-          </FilterTab>
-          <FilterTab href={`/colleges/${slug}?filter=all`} active={filter === "all"}>
-            All ({stats.count})
-          </FilterTab>
-        </div>
-      </section>
-
-      {/* Two-section list ============================================== */}
+      {/* Two-section list — first thing after the college header so the
+          actionable scholarships are above the fold. Stats moved to the
+          bottom (they're nice-to-have, not the user's primary goal). === */}
       {(() => {
         const actionable = visible.filter((s) => !isAutoConsidered(s));
         const auto = visible.filter((s) => isAutoConsidered(s));
         if (visible.length === 0) {
           return (
-            <section className="mt-8">
+            <section className="mt-14">
               <EmptyState collegeName={college.name} hasAny={all.length > 0} />
             </section>
           );
         }
         return (
           <>
-            {/* APPLY FOR THESE — the actionable ones ================= */}
-            <section className="mt-8">
-              <div className="flex items-baseline gap-3">
-                <h3 className="text-xl font-bold tracking-tight">
-                  Apply for these
-                </h3>
-                <span className="text-sm text-fg-muted font-mono">
-                  {actionable.length}
-                </span>
+            {/* APPLY FOR THESE — the actionable ones (primary H2) ======= */}
+            <section className="mt-14">
+              <div className="flex flex-wrap items-baseline justify-between gap-4">
+                <div className="flex items-baseline gap-3">
+                  <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight">
+                    Apply for these
+                  </h2>
+                  <span className="text-lg text-fg-muted font-mono">
+                    {actionable.length}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <FilterTab
+                    href={`/colleges/${slug}?filter=upcoming`}
+                    active={filter !== "all"}
+                  >
+                    Open ({stats.openCount})
+                  </FilterTab>
+                  <FilterTab
+                    href={`/colleges/${slug}?filter=all`}
+                    active={filter === "all"}
+                  >
+                    All ({stats.count})
+                  </FilterTab>
+                </div>
               </div>
-              <p className="mt-1 text-sm text-fg-muted">
+              <p className="mt-2 text-fg-muted">
                 Scholarships requiring a separate application — easy to miss without us.
               </p>
               {actionable.length === 0 ? (
@@ -155,16 +140,16 @@ export default async function CollegePage({
               )}
             </section>
 
-            {/* AUTO-CONSIDERED — secondary section ==================== */}
+            {/* AUTO-CONSIDERED — sibling H2 ============================= */}
             {auto.length > 0 && (
-              <section className="mt-14">
+              <section className="mt-16">
                 <div className="flex items-baseline gap-3">
-                  <h3 className="text-xl font-bold tracking-tight text-fg-soft">
+                  <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight text-fg-soft">
                     Auto-considered when you apply
-                  </h3>
-                  <span className="text-sm text-fg-muted font-mono">{auto.length}</span>
+                  </h2>
+                  <span className="text-lg text-fg-muted font-mono">{auto.length}</span>
                 </div>
-                <p className="mt-1 text-sm text-fg-muted">
+                <p className="mt-2 text-fg-muted">
                   No separate form — you&apos;re automatically considered when you submit the
                   admissions application. Listed here so you know what you&apos;re in line for.
                 </p>
@@ -181,9 +166,30 @@ export default async function CollegePage({
         );
       })()}
 
+      {/* Stat strip — moved below the scholarship sections so the
+          actionable list is above the fold. Still useful as a summary. */}
+      {all.length > 0 && (
+        <section className="mt-16 grid grid-cols-2 lg:grid-cols-4 gap-px bg-border rounded-2xl border border-border overflow-hidden">
+          <StatCell label="Scholarships indexed" value={stats.count.toString()} />
+          <StatCell
+            label="Total potential"
+            value={stats.totalMax > 0 ? formatAmount(null, stats.totalMax) : "—"}
+          />
+          <StatCell
+            label="Average award"
+            value={stats.avg > 0 ? formatAmount(null, stats.avg) : "—"}
+          />
+          <StatCell
+            label="Next deadline"
+            value={stats.nextDeadlineLabel}
+            accent={stats.nextDeadlineDays != null && stats.nextDeadlineDays <= 30}
+          />
+        </section>
+      )}
+
       {/* Source attribution / freshness ================================ */}
       {all.length > 0 && (
-        <p className="mt-12 text-center text-sm text-fg-muted">
+        <p className="mt-8 text-center text-sm text-fg-muted">
           Data refreshed automatically. Always verify deadlines and eligibility on the
           official scholarship page before applying.
         </p>

@@ -2,7 +2,15 @@ import Link from "next/link";
 import { isAutoConsidered, type Scholarship } from "@/lib/db/queries";
 import { formatAmount, formatDeadline, daysUntil, scopeLabel } from "@/lib/format";
 
-export function ScholarshipCard({ s }: { s: Scholarship }) {
+export type ScholarshipMatch = { score: number; reason: string };
+
+export function ScholarshipCard({
+  s,
+  match,
+}: {
+  s: Scholarship;
+  match?: ScholarshipMatch;
+}) {
   const days = daysUntil(s.deadline);
   const urgent = days != null && days >= 0 && days <= 30;
   const past = days != null && days < 0;
@@ -34,7 +42,19 @@ export function ScholarshipCard({ s }: { s: Scholarship }) {
         {s.name}
       </h3>
 
-      {s.eligibility_text && (
+      {match && (
+        <div className="mt-4 rounded-xl bg-bg-elev/60 border border-cyan/30 p-4 text-[15px] text-fg-soft leading-relaxed">
+          <div className="flex items-baseline gap-2">
+            <span className="text-cyan font-semibold">Why you fit</span>
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted">
+              · {match.score}% match
+            </span>
+          </div>
+          <p className="mt-1">{match.reason}</p>
+        </div>
+      )}
+
+      {!match && s.eligibility_text && (
         <p className="mt-3 text-fg-soft leading-relaxed line-clamp-2">
           {s.eligibility_text}
         </p>

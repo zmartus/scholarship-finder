@@ -7,7 +7,7 @@ import {
   type Scholarship,
 } from "@/lib/db/queries";
 import { ScholarshipCard } from "@/components/ScholarshipCard";
-import { MatchSection } from "@/components/MatchSection";
+import { ScholarshipListWithMatches } from "@/components/ScholarshipListWithMatches";
 import { formatAmount, daysUntil } from "@/lib/format";
 
 type Params = Promise<{ slug: string }>;
@@ -97,13 +97,6 @@ export default async function CollegePage({
         />
       </section>
 
-      {/* AI MATCHES (or profile-builder CTA) ============================= */}
-      <MatchSection
-        collegeSlug={slug}
-        collegeName={college.name}
-        scholarshipMap={Object.fromEntries(all.map((s) => [s.id, s]))}
-      />
-
       {/* Filter row ===================================================== */}
       <section className="mt-14 flex flex-wrap items-baseline justify-between gap-4">
         <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight">
@@ -145,25 +138,21 @@ export default async function CollegePage({
               <p className="mt-1 text-sm text-fg-muted">
                 Scholarships requiring a separate application — easy to miss without us.
               </p>
-              <ul className="mt-5 grid sm:grid-cols-2 gap-5">
-                {actionable.length === 0 ? (
-                  <li className="sm:col-span-2">
-                    <div className="card text-center py-10 px-6">
-                      <p className="text-fg-soft">
-                        We&apos;re still curating the application-required scholarships for{" "}
-                        {college.name}. The auto-considered awards below show what you&apos;ll
-                        be in line for if admitted.
-                      </p>
-                    </div>
-                  </li>
-                ) : (
-                  actionable.map((s) => (
-                    <li key={s.id}>
-                      <ScholarshipCard s={s} />
-                    </li>
-                  ))
-                )}
-              </ul>
+              {actionable.length === 0 ? (
+                <div className="mt-5 card text-center py-10 px-6">
+                  <p className="text-fg-soft">
+                    We&apos;re still curating the application-required scholarships for{" "}
+                    {college.name}. The auto-considered awards below show what you&apos;ll
+                    be in line for if admitted.
+                  </p>
+                </div>
+              ) : (
+                <ScholarshipListWithMatches
+                  scholarships={actionable}
+                  collegeSlug={slug}
+                  collegeName={college.name}
+                />
+              )}
             </section>
 
             {/* AUTO-CONSIDERED — secondary section ==================== */}

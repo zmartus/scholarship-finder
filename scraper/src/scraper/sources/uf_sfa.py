@@ -32,7 +32,8 @@ PAGE_URL = "https://www.sfa.ufl.edu/types-of-aid/scholarships/"
 # Most UF freshman scholarships are auto-considered when you submit the
 # admissions application. For those, link directly to the apply portal so
 # students don't have to hunt for the right scholarship on a long page.
-APPLY_URL = "https://admissions.ufl.edu/apply"
+# (admissions.ufl.edu/apply alone 403s — the canonical freshman path is /apply/freshman/.)
+APPLY_URL = "https://admissions.ufl.edu/apply/freshman/"
 
 # Stamps Scholars Program is admin'd via the Honors Program (Early Action).
 STAMPS_URL = "https://www.stampsscholars.org/applying/scholarship-programs/university-of-florida"

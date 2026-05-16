@@ -94,18 +94,13 @@ export default async function CollegePage({
         }
         return (
           <>
-            {/* THE AI-MATCH SECTION — first thing after the college header.
-                Hierarchy: 'AI matches' (H2) → 'Apply to these' (lead) →
-                tagline. Then the curated, AI-ranked cards. ============== */}
+            {/* TOP SECTION — curated, AI-ranked actionable scholarships. */}
             <section className="mt-14">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <h2 className="font-extrabold text-4xl sm:text-5xl tracking-tight gradient-text inline-block">
-                    AI matches
-                  </h2>
-                  <p className="mt-3 text-2xl sm:text-3xl font-bold tracking-tight text-fg">
+                  <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight">
                     Apply to these
-                  </p>
+                  </h2>
                   <p className="mt-2 text-fg-muted">
                     You might have missed them without us — scholarships
                     requiring a separate application, ranked for your profile.
@@ -148,13 +143,12 @@ export default async function CollegePage({
               <section className="mt-16">
                 <div className="flex items-baseline gap-3">
                   <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight text-fg-soft">
-                    These are auto-applied when you apply
+                    You&apos;re in line for these
                   </h2>
                   <span className="text-lg text-fg-muted font-mono">{auto.length}</span>
                 </div>
                 <p className="mt-2 text-fg-muted">
-                  No separate form — you&apos;re automatically considered when you submit your
-                  admissions application. Listed here so you know what you&apos;re in line for.
+                  Awarded automatically when you&apos;re admitted — no separate form to fill out.
                 </p>
                 <ul className="mt-5 grid sm:grid-cols-2 gap-5">
                   {auto.map((s) => (

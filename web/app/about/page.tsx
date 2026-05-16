@@ -48,8 +48,8 @@ export default function AboutPage() {
             Florida Department of Education
           </a>{" "}
           and apply to every Florida college student.{" "}
-          <strong className="text-fg">National scholarships</strong> are pulled directly from each foundation&apos;s
-          own application page.{" "}
+          <strong className="text-fg">National scholarships</strong>{" "}
+          are pulled directly from each foundation&apos;s own application page.{" "}
           <strong className="text-fg">School-specific awards</strong> are added one college at a time —{" "}
           <a className="text-cyan hover:underline" href="https://www.sfa.ufl.edu/types-of-aid/scholarships/" target="_blank" rel="noopener noreferrer">
             UF&apos;s

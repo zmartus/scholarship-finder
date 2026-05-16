@@ -1,6 +1,6 @@
-# CollegeMoneyAI — Status & Roadmap
+# Grantaria — Status & Roadmap
 
-**Live at:** https://collegemoneyai.com (custom domain live)
+**Live at:** https://grantaria.com (rebrand May 16, 2026; old collegemoneyai.com 301-redirects)
 **Target launch (counselor pilot + first paying user):** June 1, 2026
 **As of:** May 14, 2026
 
@@ -130,7 +130,7 @@ The full V1 user flow works end-to-end on the deployed URL:
 - ✅ Hard exclusions — out-of-state filtered for FL residents, FL-only filtered for non-FL
 - ✅ Landing, /colleges, /colleges/[slug], /scholarships/[id], /profile, /about
 - ✅ Dark gradient AI-product UI
-- ✅ Renamed to CollegeMoneyAI
+- ✅ Renamed to Grantaria (May 16, 2026; previously CollegeMoneyAI)
 - ✅ Vercel deployment + GitHub auto-deploy on push
 - ✅ Public repo (Hobby plan compatible)
 - ✅ "Last verified" date label on every scholarship card
@@ -145,11 +145,11 @@ All routes return 200. /about renders. UF page shows Coca-Cola/Bright Futures/ve
 ## ⏳ PENDING — short list
 
 ### This week (blockers for "real launch")
-- [ ] Buy `collegemoneyai.com` (~$10/yr at Cloudflare Registrar) and point at Vercel
+- [x] Domain bought (`grantaria.com` on Cloudflare); DNS pointed at Vercel
 - [ ] Privacy policy + ToS (boilerplate from termly.io — required before sharing publicly)
 - [ ] Plausible or Vercel Analytics — need to know what people do
 - [ ] Mobile QA pass on real iPhone (open every page, fix anything that breaks)
-- [ ] Lock @collegemoneyai social handles (IG, TikTok, X) before someone else does
+- [ ] Lock @grantaria social handles (IG, TikTok, X, Threads, YouTube) before someone else does
 
 ### First user signal
 - [ ] Test full flow on user's own phone end-to-end

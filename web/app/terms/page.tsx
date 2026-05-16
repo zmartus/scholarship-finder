@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Terms of Service — CollegeMoneyAI",
+  title: "Terms of Service — Grantaria",
   description:
-    "The short, honest terms for using CollegeMoneyAI. Free to use, verify deadlines yourself, no warranties.",
+    "The short, honest terms for using Grantaria. Free to use, verify deadlines yourself, no warranties.",
 };
 
 export default function TermsPage() {
@@ -25,13 +25,13 @@ export default function TermsPage() {
           The <span className="gradient-text">house rules.</span>
         </h1>
         <p className="mt-5 text-fg-muted text-sm font-mono uppercase tracking-[0.18em]">
-          Last updated: May 11, 2026
+          Last updated: May 16, 2026
         </p>
       </header>
 
       <div className="mt-10 prose-content text-lg text-fg-soft leading-relaxed space-y-6">
         <p>
-          The short version: CollegeMoneyAI is a free scholarship-matching tool built by one
+          The short version: Grantaria is a free scholarship-matching tool built by one
           person. We do our best to keep the data accurate, but you have to verify deadlines
           on the official source before you apply. Use it as a starting point, not a finish
           line.
@@ -39,7 +39,7 @@ export default function TermsPage() {
 
         <h2 className="text-2xl font-bold text-fg pt-4">By using the site, you agree to these terms</h2>
         <p>
-          Visiting <strong className="text-fg">collegemoneyai.com</strong> means you&apos;ve
+          Visiting <strong className="text-fg">grantaria.com</strong> means you&apos;ve
           read and accepted what&apos;s on this page. If you don&apos;t agree, don&apos;t use
           the site.
         </p>
@@ -97,7 +97,7 @@ export default function TermsPage() {
 
         <h2 className="text-2xl font-bold text-fg pt-4">Limitation of liability</h2>
         <p>
-          To the maximum extent allowed by law, CollegeMoneyAI and its operator are not
+          To the maximum extent allowed by law, Grantaria and its operator are not
           liable for any indirect, incidental, or consequential damages — including missed
           scholarship deadlines, denied applications, or lost opportunities — arising out of
           your use of the site. Because the service is free, the maximum aggregate liability
@@ -119,10 +119,10 @@ export default function TermsPage() {
 
         <h2 className="text-2xl font-bold text-fg pt-4">Operator</h2>
         <p>
-          CollegeMoneyAI is operated by <strong className="text-fg">Zac Martus</strong>, a
+          Grantaria is operated by <strong className="text-fg">Zac Martus</strong>, a
           Florida-based individual. Contact:{" "}
-          <a className="text-cyan hover:underline" href="mailto:hi@collegemoneyai.com">
-            hi@collegemoneyai.com
+          <a className="text-cyan hover:underline" href="mailto:hi@grantaria.com">
+            hi@grantaria.com
           </a>
           .
         </p>

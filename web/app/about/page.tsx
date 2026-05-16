@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "About — CollegeMoneyAI",
+  title: "About — Grantaria",
   description:
-    "Why CollegeMoneyAI exists, how the data is curated, and how we use AI to surface scholarships that actually fit you.",
+    "Why Grantaria exists, how the data is curated, and how we use AI to surface scholarships that actually fit you.",
 };
 
 export default function AboutPage() {
@@ -28,7 +28,7 @@ export default function AboutPage() {
 
       <div className="mt-10 prose-content text-lg text-fg-soft leading-relaxed space-y-6">
         <p>
-          I built CollegeMoneyAI in 2026 because every scholarship site I tried as a high
+          I built Grantaria in 2026 because every scholarship site I tried as a high
           school senior in Florida felt the same: a wall of generic results, ad-heavy,
           designed for SEO instead of for the person actually applying.
         </p>
@@ -66,7 +66,7 @@ export default function AboutPage() {
         <p>
           We cover 41 Florida colleges right now — and we&apos;re expanding to the rest of the
           country by demand. If you want a school we don&apos;t have yet,{" "}
-          <a className="text-cyan hover:underline" href="mailto:hi@collegemoneyai.com?subject=Add%20a%20school&body=School%20I%20want%20covered%3A%20">
+          <a className="text-cyan hover:underline" href="mailto:hi@grantaria.com?subject=Add%20a%20school&body=School%20I%20want%20covered%3A%20">
             email me
           </a>{" "}
           and tell me which one. Out-of-state requests bump that school higher on the list.
@@ -76,7 +76,7 @@ export default function AboutPage() {
         <p>
           The best local awards never make it to national databases — Rotary club scholarships,
           church awards, county foundation grants, your dentist&apos;s annual giveaway.{" "}
-          <a className="text-cyan hover:underline" href="mailto:hi@collegemoneyai.com?subject=Submit%20a%20scholarship&body=Scholarship%20name%3A%0AAmount%3A%0ADeadline%3A%0AOfficial%20source%20URL%3A%0AEligibility%2Fnotes%3A%0A">
+          <a className="text-cyan hover:underline" href="mailto:hi@grantaria.com?subject=Submit%20a%20scholarship&body=Scholarship%20name%3A%0AAmount%3A%0ADeadline%3A%0AOfficial%20source%20URL%3A%0AEligibility%2Fnotes%3A%0A">
             Send me the link
           </a>{" "}
           and I&apos;ll add it. Counselors, parents, and current students — everyone&apos;s welcome to contribute.
@@ -92,14 +92,14 @@ export default function AboutPage() {
 
         <h2 className="text-2xl font-bold text-fg pt-4">Free to use</h2>
         <p>
-          CollegeMoneyAI is free. No paywall, no ads, no data selling, no spam.
+          Grantaria is free. No paywall, no ads, no data selling, no spam.
         </p>
 
         <h2 className="text-2xl font-bold text-fg pt-4">Built by</h2>
         <p>
           Zac Martus — CS student at UF.{" "}
-          <a className="text-cyan hover:underline" href="mailto:hi@collegemoneyai.com">
-            hi@collegemoneyai.com
+          <a className="text-cyan hover:underline" href="mailto:hi@grantaria.com">
+            hi@grantaria.com
           </a>
         </p>
       </div>

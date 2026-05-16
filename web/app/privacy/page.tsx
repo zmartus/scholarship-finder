@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Privacy Policy — CollegeMoneyAI",
+  title: "Privacy Policy — Grantaria",
   description:
-    "A plain-English explanation of what CollegeMoneyAI collects, where it goes, and what we never do with your data.",
+    "A plain-English explanation of what Grantaria collects, where it goes, and what we never do with your data.",
 };
 
 export default function PrivacyPage() {
@@ -25,16 +25,16 @@ export default function PrivacyPage() {
           Your data, <span className="gradient-text">your call.</span>
         </h1>
         <p className="mt-5 text-fg-muted text-sm font-mono uppercase tracking-[0.18em]">
-          Last updated: May 11, 2026
+          Last updated: May 16, 2026
         </p>
       </header>
 
       <div className="mt-10 prose-content text-lg text-fg-soft leading-relaxed space-y-6">
         <p>
-          This is the short, honest version of how CollegeMoneyAI handles your data. No legal
+          This is the short, honest version of how Grantaria handles your data. No legal
           jargon, no fluff. If anything here is unclear, email{" "}
-          <a className="text-cyan hover:underline" href="mailto:hi@collegemoneyai.com">
-            hi@collegemoneyai.com
+          <a className="text-cyan hover:underline" href="mailto:hi@grantaria.com">
+            hi@grantaria.com
           </a>{" "}
           and I&apos;ll explain.
         </p>
@@ -54,8 +54,8 @@ export default function PrivacyPage() {
         <p>
           <strong className="text-fg">Emails you send us</strong> — when you submit a
           scholarship, report outdated info, or just say hi at{" "}
-          <a className="text-cyan hover:underline" href="mailto:hi@collegemoneyai.com">
-            hi@collegemoneyai.com
+          <a className="text-cyan hover:underline" href="mailto:hi@grantaria.com">
+            hi@grantaria.com
           </a>
           , the message lands in a personal inbox. That&apos;s it.
         </p>
@@ -89,7 +89,7 @@ export default function PrivacyPage() {
             <strong className="text-fg">Supabase</strong> — stores the public scholarship database (no user data)
           </li>
           <li>
-            <strong className="text-fg">ImprovMX</strong> — forwards email sent to hi@collegemoneyai.com to a personal inbox
+            <strong className="text-fg">ImprovMX</strong> — forwards email sent to hi@grantaria.com to a personal inbox
           </li>
         </ul>
         <p>
@@ -110,24 +110,24 @@ export default function PrivacyPage() {
         <h2 className="text-2xl font-bold text-fg pt-4">Deleting your data</h2>
         <p>
           <strong className="text-fg">Your profile:</strong> clear your browser&apos;s
-          localStorage for collegemoneyai.com, or use your browser&apos;s &ldquo;clear site
+          localStorage for grantaria.com, or use your browser&apos;s &ldquo;clear site
           data&rdquo; option. Done — it&apos;s gone, we never had a copy.
         </p>
         <p>
           <strong className="text-fg">Emails you sent us:</strong> email{" "}
-          <a className="text-cyan hover:underline" href="mailto:hi@collegemoneyai.com">
-            hi@collegemoneyai.com
+          <a className="text-cyan hover:underline" href="mailto:hi@grantaria.com">
+            hi@grantaria.com
           </a>{" "}
           asking us to delete the thread, and we will.
         </p>
 
         <h2 className="text-2xl font-bold text-fg pt-4">Kids under 13</h2>
         <p>
-          CollegeMoneyAI is built for high school seniors (16+) and their families. We
+          Grantaria is built for high school seniors (16+) and their families. We
           don&apos;t knowingly collect data from anyone under 13. If a parent realizes their
           under-13 child has used the site, email{" "}
-          <a className="text-cyan hover:underline" href="mailto:hi@collegemoneyai.com">
-            hi@collegemoneyai.com
+          <a className="text-cyan hover:underline" href="mailto:hi@grantaria.com">
+            hi@grantaria.com
           </a>{" "}
           and we&apos;ll help.
         </p>
@@ -142,10 +142,10 @@ export default function PrivacyPage() {
 
         <h2 className="text-2xl font-bold text-fg pt-4">Contact</h2>
         <p>
-          CollegeMoneyAI is operated by <strong className="text-fg">Zac Martus</strong>, a
+          Grantaria is operated by <strong className="text-fg">Zac Martus</strong>, a
           Florida-based individual. Questions, concerns, or requests:{" "}
-          <a className="text-cyan hover:underline" href="mailto:hi@collegemoneyai.com">
-            hi@collegemoneyai.com
+          <a className="text-cyan hover:underline" href="mailto:hi@grantaria.com">
+            hi@grantaria.com
           </a>
           .
         </p>

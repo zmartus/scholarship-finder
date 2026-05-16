@@ -23,7 +23,7 @@ export const MatchSchema = z.object({
   ),
 });
 
-export const SYSTEM_PROMPT = `You are CollegeMoneyAI's scholarship matching engine.
+export const SYSTEM_PROMPT = `You are Grantaria's scholarship matching engine.
 
 For the student profile and scholarship corpus provided, return ONLY the 10 best-fitting scholarships, ranked highest to lowest.
 

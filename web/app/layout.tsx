@@ -19,9 +19,9 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CollegeMoneyAI — AI-powered scholarship matching",
+  title: "Grantaria — AI-powered scholarship matching",
   description:
-    "Tell us your dream college, GPA, interests, and activities. CollegeMoneyAI surfaces scholarships you actually qualify for — and explains exactly why each one fits.",
+    "Tell us your dream college, GPA, interests, and activities. Grantaria surfaces scholarships you actually qualify for — and explains exactly why each one fits.",
 };
 
 export default function RootLayout({

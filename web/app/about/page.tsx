@@ -42,7 +42,7 @@ export default function AboutPage() {
 
         <h2 className="text-2xl font-bold text-fg pt-4">How the data works</h2>
         <p>
-          Every scholarship in the database is hand-verified against its official source.{" "}
+          Every scholarship in the database is verified against its official source.{" "}
           <strong className="text-fg">State-level awards</strong> like Florida Bright Futures and FSAG come from the{" "}
           <a className="text-cyan hover:underline" href="https://www.floridastudentfinancialaidsg.org/" target="_blank" rel="noopener noreferrer">
             Florida Department of Education
@@ -50,11 +50,17 @@ export default function AboutPage() {
           and apply to every Florida college student.{" "}
           <strong className="text-fg">National scholarships</strong>{" "}
           are pulled directly from each foundation&apos;s own application page.{" "}
-          <strong className="text-fg">School-specific awards</strong> are added one college at a time —{" "}
-          <a className="text-cyan hover:underline" href="https://www.sfa.ufl.edu/types-of-aid/scholarships/" target="_blank" rel="noopener noreferrer">
-            UF&apos;s
-          </a>{" "}
-          are live, and FSU, UCF, USF and others are next on the list.
+          <strong className="text-fg">School-specific awards</strong> are added one college at a time
+          — UF, FSU, UCF, USF, FIU, FAU, Miami, Stetson, Rollins, Embry-Riddle, Florida Tech,
+          and New College of Florida are all live, with smaller schools on the way.
+        </p>
+        <p>
+          Within each school&apos;s list we separate{" "}
+          <strong className="text-fg">scholarships requiring a separate application</strong> from
+          ones you&apos;re <strong className="text-fg">automatically considered for at admission</strong>.
+          The AI matcher only ranks scholarships where action matters — submit your admissions
+          application and you&apos;re in line for the automatic ones, so we focus you on the ones
+          that are easy to miss.
         </p>
         <p>
           Every scholarship card shows a <em>Last verified</em> date. If a deadline shifts mid-cycle,

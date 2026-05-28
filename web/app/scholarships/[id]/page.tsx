@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ApplyCTA } from "@/components/ApplyCTA";
 import { getScholarshipById, isAutoConsidered } from "@/lib/db/queries";
 import {
   formatAmount,
@@ -124,21 +125,15 @@ export default async function ScholarshipPage({ params }: { params: Params }) {
         </section>
       )}
 
-      {/* Apply CTA ====================================================== */}
-      <section className="mt-14">
-        <a
-          href={s.source_url}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="btn-gradient w-full sm:w-auto justify-center text-base"
-        >
-          {ctaLabel(s.scope, isAutoConsidered(s))}
-          <ExternalArrow />
-        </a>
-        <p className="mt-3 text-sm text-fg-muted">
-          {ctaHelper(s.scope, isAutoConsidered(s))}
-        </p>
-      </section>
+      {/* Apply CTA — client component so we can track the apply click === */}
+      <ApplyCTA
+        href={s.source_url}
+        label={ctaLabel(s.scope, isAutoConsidered(s))}
+        helper={ctaHelper(s.scope, isAutoConsidered(s))}
+        scope={s.scope}
+        isAuto={isAutoConsidered(s)}
+        scholarshipId={s.id}
+      />
 
       {/* Freshness ====================================================== */}
       {s.last_scraped && (
@@ -190,13 +185,6 @@ function Stat({
   );
 }
 
-function ExternalArrow() {
-  return (
-    <svg viewBox="0 0 16 16" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-      <path d="M5 11l6-6M6 4h5v5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 
 // CTA copy reflects what students actually do at the destination —
 // the "apply" verb is misleading for school awards that are auto-

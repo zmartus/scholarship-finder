@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { track } from "@vercel/analytics";
 import { useProfile } from "@/components/useProfile";
-import { ATTRIBUTE_OPTIONS, EMPTY_PROFILE, type Profile } from "@/lib/profile";
+import { ATTRIBUTE_OPTIONS, EMPTY_PROFILE, isProfileUseful, type Profile } from "@/lib/profile";
 
 const US_STATES = [
   "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA",
@@ -36,6 +37,19 @@ function ProfileForm() {
     if (hydrated) setDraft(profile ?? EMPTY_PROFILE);
   }, [hydrated, profile]);
 
+  // Fire profile_started once per session when the user lands here without
+  // a usable profile yet (i.e. they're actually starting the form).
+  const startedRef = useRef(false);
+  useEffect(() => {
+    if (!hydrated || startedRef.current) return;
+    if (!profile || !isProfileUseful(profile)) {
+      track("profile_started", {
+        from_college: forCollege ?? "none",
+      });
+      startedRef.current = true;
+    }
+  }, [hydrated, profile, forCollege]);
+
   function set<K extends keyof Profile>(key: K, value: Profile[K]) {
     setDraft((d) => ({ ...d, [key]: value }));
     setSaved(false);
@@ -56,6 +70,15 @@ function ProfileForm() {
     e.preventDefault();
     replace(draft);
     setSaved(true);
+    track("profile_completed", {
+      has_gpa: draft.gpa != null ? 1 : 0,
+      has_major: draft.intended_major ? 1 : 0,
+      has_state: draft.state ? 1 : 0,
+      is_florida: draft.state === "FL" ? 1 : 0,
+      attributes_count: draft.attributes.length,
+      has_interests: draft.interests ? 1 : 0,
+      from_college: forCollege ?? "none",
+    });
     // Smooth nudge — let user see "Saved" then route them.
     // If they came from a college page, send them straight back to matches.
     const destination = nextPath && isSafeNextPath(nextPath) ? nextPath : "/colleges";

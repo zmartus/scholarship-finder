@@ -6,6 +6,7 @@ import {
   listScholarshipsForCollege,
   type Scholarship,
 } from "@/lib/db/queries";
+import { PaidTierCTA } from "@/components/PaidTierCTA";
 import { ScholarshipCard } from "@/components/ScholarshipCard";
 import { ScholarshipListWithMatches } from "@/components/ScholarshipListWithMatches";
 import { formatAmount, daysUntil } from "@/lib/format";
@@ -137,6 +138,10 @@ export default async function CollegePage({
                 />
               )}
             </section>
+
+            {/* PAID-TIER FAKE DOOR — measures B2C intent between the two
+                scholarship lists. Shown on every college page. ============ */}
+            <PaidTierCTA />
 
             {/* AUTO-CONSIDERED — sibling H2 ============================= */}
             {auto.length > 0 && (

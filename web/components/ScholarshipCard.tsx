@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { track } from "@vercel/analytics";
 import type { Scholarship } from "@/lib/db/queries";
 import { isAutoConsidered } from "@/lib/scholarship-utils";
 import { formatAmount, formatDeadline, daysUntil, scopeLabel } from "@/lib/format";
@@ -17,9 +20,19 @@ export function ScholarshipCard({
   const past = days != null && days < 0;
   const auto = isAutoConsidered(s);
 
+  const handleClick = () => {
+    track("scholarship_card_clicked", {
+      scope: s.scope,
+      auto: auto ? 1 : 0,
+      matched: match ? 1 : 0,
+      match_score: match?.score ?? 0,
+    });
+  };
+
   return (
     <Link
       href={`/scholarships/${s.id}`}
+      onClick={handleClick}
       className={`match-card block p-6 sm:p-7 hover:border-border-strong transition-colors group ${
         auto ? "opacity-90" : ""
       }`}

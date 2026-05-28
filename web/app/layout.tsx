@@ -19,9 +19,24 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.grantaria.com"),
   title: "Grantaria — AI-powered scholarship matching",
   description:
     "Tell us your dream college, GPA, interests, and activities. Grantaria surfaces scholarships you actually qualify for — and explains exactly why each one fits.",
+  openGraph: {
+    title: "Grantaria — AI-powered scholarship matching",
+    description:
+      "AI-ranked scholarships for Florida high school seniors. Free, no signup.",
+    url: "https://www.grantaria.com",
+    siteName: "Grantaria",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Grantaria — AI-powered scholarship matching",
+    description:
+      "AI-ranked scholarships for Florida high school seniors. Free, no signup.",
+  },
 };
 
 export default function RootLayout({

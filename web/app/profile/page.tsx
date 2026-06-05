@@ -184,7 +184,7 @@ function ProfileForm() {
                 ))}
               </select>
             </Field>
-            <Field label="High school" hint="Some local awards prefer specific schools or counties." className="sm:col-span-2">
+            <Field label="High school" hint="Enter your full school name and city — it's how we find local scholarships in your area." className="sm:col-span-2">
               <input
                 type="text"
                 value={draft.high_school ?? ""}

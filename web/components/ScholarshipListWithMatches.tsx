@@ -130,18 +130,26 @@ export function ScholarshipListWithMatches({
 
   const hasProfile = hydrated && profile && isProfileUseful(profile);
 
+  // Untied LOCAL awards (scope=local, no college) are geographically gated —
+  // they only make sense once we know the student's high school, so they're
+  // shown ONLY when the AI region-matches them. Never in the no-profile or
+  // error-fallback views (we'd have no way to filter by region there).
+  const browsable = useMemo(
+    () => scholarships.filter((s) => !(s.scope === "local" && s.college_id === null)),
+    [scholarships],
+  );
+
   // What to render:
   //   With a profile  → ONLY scholarships the AI matched, sorted by score.
-  //                     This is the "AI matches" curated list the user
-  //                     explicitly asked for. Unmatched scholarships are
-  //                     hidden — trust the AI's filter.
-  //   No profile      → All actionable scholarships in default order
-  //                     so the page isn't empty and the build-profile CTA
-  //                     can pitch the AI feature.
-  //   Profile + AI failed → fall back to all so the user still sees the catalog.
+  //                     This is the curated list. Unmatched ones are hidden —
+  //                     trust the AI's filter. Local awards appear here only
+  //                     if region-matched.
+  //   No profile      → browsable scholarships (college + state + national)
+  //                     in default order; untied local awards excluded.
+  //   Profile + AI failed → fall back to browsable so the catalog still shows.
   const visibleScholarships = useMemo(() => {
-    if (!hasProfile) return scholarships;
-    if (matches.length === 0 && !loading && error) return scholarships; // fallback
+    if (!hasProfile) return browsable;
+    if (matches.length === 0 && !loading && error) return browsable; // fallback
     if (matches.length === 0) return []; // still loading or no matches yet
     return scholarships
       .filter((s) => matchMap[s.id] != null)
@@ -149,7 +157,7 @@ export function ScholarshipListWithMatches({
         (a, b) =>
           (matchMap[b.id]?.score ?? 0) - (matchMap[a.id]?.score ?? 0),
       );
-  }, [hasProfile, scholarships, matchMap, matches.length, loading, error]);
+  }, [hasProfile, scholarships, browsable, matchMap, matches.length, loading, error]);
 
   return (
     <>

@@ -172,7 +172,10 @@ export async function listScholarshipsForCollege(
     .select("*")
     .eq("active", true)
     .or(
-      `college_id.eq.${collegeId},and(scope.eq.state,college_id.is.null),scope.eq.national`,
+      // (a) this college's own awards, (b) portable state-wide aid,
+      // (c) nationals, (d) untied LOCAL awards (region-matched to the
+      // student later — these only render when the AI matches them).
+      `college_id.eq.${collegeId},and(scope.eq.state,college_id.is.null),scope.eq.national,and(scope.eq.local,college_id.is.null)`,
     )
     .order("deadline", { ascending: true, nullsFirst: false });
   if (error) throw new Error(error.message);

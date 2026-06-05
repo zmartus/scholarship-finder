@@ -65,7 +65,9 @@ export async function POST(req: Request) {
       .select("id, name, amount_min, amount_max, deadline, eligibility_text, description, scope, tags")
       .eq("active", true)
       .or(
-        `college_id.eq.${college.id},and(scope.eq.state,college_id.is.null),scope.eq.national`,
+        // Includes untied LOCAL awards so the pre-filter + AI can surface
+        // ones matching the student's high school / region.
+        `college_id.eq.${college.id},and(scope.eq.state,college_id.is.null),scope.eq.national,and(scope.eq.local,college_id.is.null)`,
       );
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     scholarships = (data ?? []) as ScholarshipForMatch[];

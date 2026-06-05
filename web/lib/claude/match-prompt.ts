@@ -35,6 +35,8 @@ Score each 0-100 based on how well it fits:
 
 Be honest. If a scholarship requires Florida residency and the student is out of state, leave it out — don't pad the list.
 
+Respect LOCAL eligibility. Some awards are restricted to a specific high school, city, or county (e.g. "graduating senior at Ponte Vedra High School" or "Duval County schools only"). If the student's high school clearly matches, rank it high and call out the local fit in your reason ("As a Ponte Vedra senior, you're one of the few eligible for this $4,000 award"). If their high school is clearly somewhere else, leave it out entirely — a Miami student should never see a Jacksonville-only scholarship.
+
 For each match return a one-sentence "reason" (under 25 words) that:
 - Cites at least one concrete fact from the student's profile
 - Sounds like a friendly counselor, not a generic AI

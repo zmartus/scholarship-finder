@@ -5,9 +5,20 @@ that never make it into national databases. They're the core of Grantaria's
 thesis: a Ponte Vedra senior has no idea the Craig Speziale or Cole Kelley
 award exists unless a counselor tells them. Now the app surfaces them.
 
-Sources (hand-verified 2026-05-28):
+Sources (hand-verified 2026-05-28, expanded after a per-school sweep of the
+St. Johns County district):
   - INK! / Investing in Kids, St. Johns County — apply.ink-stjohns.org
+    (the county hub; manages 20+ awards via a single application)
   - The Community Foundation for Northeast Florida — jaxcf.org
+  - St. Augustine/Ketterlinus HS Alumni Association — mysahs.com
+  - Griffin Moody Scholarship Fund (Nease HS) — griffinmoodyscholarshipfund.org
+
+Every St. Johns County public high school (Nease, Bartram Trail, Beachside,
+Creekside, Pedro Menendez, Ponte Vedra, St. Augustine, St. Johns Technical,
+Tocoi Creek) was checked. Most route their seniors to the INK! hub rather
+than listing unique on-site awards; the genuinely school-specific awards
+that aren't in INK! are the SAHS Alumni Association packet and the Griffin
+Moody Fund, both included below.
 
 These are NOT tied to a college (college_slug=None). They follow the student
 (where they graduated from), not the school they're heading to. The matching
@@ -174,6 +185,87 @@ def _items() -> list[ScholarshipItem]:
             "description": "Need-based award covering roughly one year of tuition for a St. Johns County senior enrolling at a Florida state college.",
             "eligibility_text": "Graduating senior at a St. Johns County (FL) high school; demonstrated financial need; planning to enroll at a Florida state/community college. Apply through the single INK! application.",
             "tags": ["local", "florida-resident", "northeast-florida", "st-johns-county", "need-based"],
+        },
+        {
+            "external_id": "neflocal-wayne-hartley",
+            "name": "Dr. Wayne Hartley Memorial Scholarship for The Academies",
+            "source_url": INK_APPLY,
+            "amount_min": 1000, "amount_max": 1000,
+            "deadline": SJC_DEADLINE,
+            "description": "Up to six $1,000 awards for graduating seniors enrolled in a career academy at Allen D. Nease, St. Augustine, or Pedro Menendez High School.",
+            "eligibility_text": "Graduating senior enrolled in a career academy at Allen D. Nease, St. Augustine, or Pedro Menendez High School (St. Johns County, FL). Awards are given for both academic excellence and financial need. Apply through the single INK! application.",
+            "tags": ["local", "florida-resident", "northeast-florida", "st-johns-county"],
+        },
+        {
+            "external_id": "neflocal-tucker-mccarty",
+            "name": "Tucker McCarty Health Science Scholarship",
+            "source_url": INK_APPLY,
+            "amount_min": 1000, "amount_max": 1000,
+            "deadline": SJC_DEADLINE,
+            "description": "$1,000 award for a graduating senior in the UF Health+ Academy of Medical and Health Careers at Pedro Menendez High School.",
+            "eligibility_text": "Graduating senior in the UF Health+ Academy of Medical and Health Careers at Pedro Menendez High School (St. Johns County, FL); pursuing a health-science career. Apply through the single INK! application.",
+            "tags": ["local", "florida-resident", "northeast-florida", "st-johns-county", "health-science"],
+        },
+        {
+            "external_id": "neflocal-tanner-gillespie",
+            "name": "Tanner Gillespie Memorial Future Firefighter Scholarship",
+            "source_url": INK_APPLY,
+            "amount_min": None, "amount_max": None,
+            "deadline": SJC_DEADLINE,
+            "description": "Award for a St. Johns County senior pursuing a career in firefighting or fire science.",
+            "eligibility_text": "Graduating senior at a St. Johns County (FL) public high school; planning to pursue a career in firefighting, fire science, or emergency services. Apply through the single INK! application.",
+            "tags": ["local", "florida-resident", "northeast-florida", "st-johns-county", "vocational"],
+        },
+        {
+            "external_id": "neflocal-rays-of-hope",
+            "name": "Rays of Hope Foundation Scholarship",
+            "source_url": INK_APPLY,
+            "amount_min": None, "amount_max": None,
+            "deadline": SJC_DEADLINE,
+            "description": "Award for a graduating St. Johns County senior, administered through INK!.",
+            "eligibility_text": "Graduating senior at a St. Johns County (FL) public high school. Apply through the single INK! application.",
+            "tags": ["local", "florida-resident", "northeast-florida", "st-johns-county"],
+        },
+        {
+            "external_id": "neflocal-kappa-alpha-psi",
+            "name": "Kappa Alpha Psi St. Augustine Alumni Scholarship",
+            "source_url": INK_APPLY,
+            "amount_min": None, "amount_max": None,
+            "deadline": SJC_DEADLINE,
+            "description": "Award from the St. Augustine alumni chapter of Kappa Alpha Psi for a graduating St. Johns County senior.",
+            "eligibility_text": "Graduating senior at a St. Johns County (FL) public high school, awarded by the St. Augustine alumni chapter of Kappa Alpha Psi Fraternity. Apply through the single INK! application.",
+            "tags": ["local", "florida-resident", "northeast-florida", "st-johns-county"],
+        },
+        {
+            "external_id": "neflocal-florence-abarbanel",
+            "name": "Florence Abarbanel Memorial Music Scholarship",
+            "source_url": INK_APPLY,
+            "amount_min": None, "amount_max": None,
+            "deadline": SJC_DEADLINE,
+            "description": "Award for a St. Johns County senior pursuing music after high school.",
+            "eligibility_text": "Graduating senior at a St. Johns County (FL) public high school; pursuing music in college or a conservatory. Apply through the single INK! application.",
+            "tags": ["local", "florida-resident", "northeast-florida", "st-johns-county", "arts", "music"],
+        },
+        # ===== Individual school / alumni-run awards (off the school sites) =====
+        {
+            "external_id": "neflocal-sahs-alumni",
+            "name": "St. Augustine High School Alumni Association Scholarships",
+            "source_url": "https://www.mysahs.com/scholarships/",
+            "amount_min": None, "amount_max": None,
+            "deadline": date(2027, 4, 20),
+            "description": "A single application unlocks 11+ named scholarships from the St. Augustine/Ketterlinus High School Alumni Association — including arts, JROTC, academy, and Flagler-College-bound awards. Winners are announced at Senior Awards Night.",
+            "eligibility_text": "Graduating senior at St. Augustine High School (St. Johns County, FL). No GPA requirement — all SAHS seniors are encouraged to apply. One application packet plus a teacher recommendation covers every award (Annie Mae Davis & Sons, Shelley Desvousges, Carol Melton, L. Curtis Westbrook, Susan Ponder-Stansel, the Nancy Pellicer and David Stansel arts awards, the SAHS Academy award, the Bill Mignon JROTC award, and Flagler-bound awards). Verify the exact deadline on the alumni site.",
+            "tags": ["local", "florida-resident", "northeast-florida", "st-johns-county"],
+        },
+        {
+            "external_id": "neflocal-griffin-moody",
+            "name": "Griffin Moody Scholarship Fund",
+            "source_url": "https://www.griffinmoodyscholarshipfund.org/",
+            "amount_min": 2500, "amount_max": 2500,
+            "deadline": date(2027, 4, 1),
+            "description": "Two $2,500 scholarships awarded each year to Allen D. Nease High School seniors, paid directly to the student's college or trade school. Essay-based — not GPA or class-rank driven.",
+            "eligibility_text": "Graduating senior at Allen D. Nease High School (St. Johns County, FL). Selection is essay-based, not GPA or class-rank driven; NJROTC participation is a plus but not required. Roughly 8 finalists are interviewed each year. Verify the exact deadline on the fund's website.",
+            "tags": ["local", "florida-resident", "northeast-florida", "st-johns-county"],
         },
     ]
 
